@@ -1,0 +1,423 @@
+{
+  "phase": "Phase 9: Static multimodal fusion",
+  "input_artifacts": [
+    "data/gold/temporal_customer_cohort.parquet",
+    "data/gold/temporal_customer_profiles_cutoff.parquet",
+    "data/processed/customer_text_view.parquet",
+    "data/embeddings/phase8_temporal_embeddings.parquet"
+  ],
+  "output_artifacts": [
+    "data/gold/reports/phase9_fusion_manifest.json",
+    "data/gold/reports/phase9_fusion_report.md"
+  ],
+  "protocol": {
+    "cohort_count": 57510,
+    "train_count": 40208,
+    "validation_count": 8681,
+    "test_count": 8621,
+    "k": 5,
+    "clustering": "KMeans(n_clusters=5, n_init=10), fit on train and predict on test",
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+    "test_outcomes_used_for_selection": false
+  },
+  "alignment_audit": {
+    "cohort_count": 57510,
+    "train_count": 40208,
+    "validation_count": 8681,
+    "test_count": 8621,
+    "text_available_count": 22535,
+    "temporal_available_count": 57510,
+    "behavioral_preprocessing": {
+      "scaler": "StandardScaler fit on available training customers only",
+      "train_available_count": 40208,
+      "available_count": 57510,
+      "dimension": 8
+    },
+    "text_preprocessing": {
+      "scaler": "StandardScaler fit on available training customers only",
+      "train_available_count": 15813,
+      "available_count": 22535,
+      "dimension": 384,
+      "missing_policy": "zero transformed vector plus explicit availability mask"
+    },
+    "temporal_preprocessing": {
+      "scaler": "StandardScaler fit on available training customers only",
+      "train_available_count": 40208,
+      "available_count": 57510,
+      "dimension": 32
+    },
+    "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f"
+  },
+  "fusion_policy": {
+    "per_view_preprocessing": "train-only StandardScaler followed by per-customer L2 normalization",
+    "fixed_weights": "equal weight per available view through normalized concatenation",
+    "text_missingness": "zero transformed text vector plus explicit text_available scalar",
+    "temporal_missingness": "explicit temporal_available flag; no missing temporal rows observed",
+    "projected_fixed_weight": "each view projected to 32 train-fitted PCA dimensions, then averaged with equal fixed weights and availability indicators"
+  },
+  "results": {
+    "behavioral_only": {
+      "components": [
+        "behavioral"
+      ],
+      "fusion": "normalized concatenation with equal fixed component weights",
+      "k": 5,
+      "dimension": 8,
+      "test_silhouette": 0.417657,
+      "test_davies_bouldin": 1.157549,
+      "test_calinski_harabasz": 3857.445804,
+      "test_stability_mean_pairwise_ari": 0.999362,
+      "test_stability_pairwise_ari": [
+        0.999401,
+        0.999701,
+        0.998826,
+        0.999757,
+        0.999701,
+        0.999424,
+        0.999158,
+        0.999125,
+        0.999458,
+        0.999069
+      ],
+      "test_cluster_counts": [
+        2432,
+        2897,
+        1746,
+        589,
+        957
+      ]
+    },
+    "text_only": {
+      "components": [
+        "text"
+      ],
+      "fusion": "normalized concatenation with equal fixed component weights",
+      "k": 5,
+      "dimension": 385,
+      "test_silhouette": 0.624421,
+      "test_davies_bouldin": 3.474894,
+      "test_calinski_harabasz": 1704.44621,
+      "test_stability_mean_pairwise_ari": 0.990473,
+      "test_stability_pairwise_ari": [
+        0.991987,
+        0.981295,
+        0.999202,
+        0.999202,
+        0.988407,
+        0.991483,
+        0.991483,
+        0.980834,
+        0.980834,
+        1.0
+      ],
+      "test_cluster_counts": [
+        1419,
+        5233,
+        479,
+        942,
+        548
+      ]
+    },
+    "temporal_only": {
+      "components": [
+        "temporal"
+      ],
+      "fusion": "normalized concatenation with equal fixed component weights",
+      "k": 5,
+      "dimension": 32,
+      "test_silhouette": 0.596058,
+      "test_davies_bouldin": 0.663542,
+      "test_calinski_harabasz": 18176.655642,
+      "test_stability_mean_pairwise_ari": 1.0,
+      "test_stability_pairwise_ari": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "test_cluster_counts": [
+        655,
+        2188,
+        4677,
+        596,
+        505
+      ]
+    },
+    "behavioral_text": {
+      "components": [
+        "behavioral",
+        "text"
+      ],
+      "fusion": "normalized concatenation with equal fixed component weights",
+      "k": 5,
+      "dimension": 393,
+      "test_silhouette": 0.217365,
+      "test_davies_bouldin": 1.899254,
+      "test_calinski_harabasz": 1527.787078,
+      "test_stability_mean_pairwise_ari": 0.78979,
+      "test_stability_pairwise_ari": [
+        0.997756,
+        0.997756,
+        0.651498,
+        0.651498,
+        1.0,
+        0.649847,
+        0.649847,
+        0.649847,
+        0.649847,
+        1.0
+      ],
+      "test_cluster_counts": [
+        1834,
+        1651,
+        1354,
+        2410,
+        1372
+      ]
+    },
+    "behavioral_temporal": {
+      "components": [
+        "behavioral",
+        "temporal"
+      ],
+      "fusion": "normalized concatenation with equal fixed component weights",
+      "k": 5,
+      "dimension": 40,
+      "test_silhouette": 0.329211,
+      "test_davies_bouldin": 1.285685,
+      "test_calinski_harabasz": 3656.770975,
+      "test_stability_mean_pairwise_ari": 0.998804,
+      "test_stability_pairwise_ari": [
+        0.999709,
+        0.999237,
+        0.997911,
+        0.999186,
+        0.999527,
+        0.998201,
+        0.998895,
+        0.998673,
+        0.998423,
+        0.99828
+      ],
+      "test_cluster_counts": [
+        2210,
+        672,
+        2750,
+        1837,
+        1152
+      ]
+    },
+    "text_temporal": {
+      "components": [
+        "text",
+        "temporal"
+      ],
+      "fusion": "normalized concatenation with equal fixed component weights",
+      "k": 5,
+      "dimension": 417,
+      "test_silhouette": 0.412614,
+      "test_davies_bouldin": 1.384387,
+      "test_calinski_harabasz": 3571.521512,
+      "test_stability_mean_pairwise_ari": 0.994338,
+      "test_stability_pairwise_ari": [
+        0.985846,
+        0.985846,
+        0.985846,
+        0.985846,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "test_cluster_counts": [
+        611,
+        3235,
+        1136,
+        2050,
+        1589
+      ]
+    },
+    "behavioral_text_temporal": {
+      "components": [
+        "behavioral",
+        "text",
+        "temporal"
+      ],
+      "fusion": "normalized concatenation with equal fixed component weights",
+      "k": 5,
+      "dimension": 425,
+      "test_silhouette": 0.206452,
+      "test_davies_bouldin": 1.821804,
+      "test_calinski_harabasz": 1880.264922,
+      "test_stability_mean_pairwise_ari": 0.999585,
+      "test_stability_pairwise_ari": [
+        0.998962,
+        1.0,
+        1.0,
+        1.0,
+        0.998962,
+        0.998962,
+        0.998962,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "test_cluster_counts": [
+        2741,
+        1821,
+        1168,
+        2218,
+        673
+      ]
+    },
+    "behavioral_text_fixed_weight": {
+      "components": [
+        "behavioral",
+        "text"
+      ],
+      "fusion": "train-fitted PCA to 32 dimensions, equal fixed weights, availability indicators",
+      "k": 5,
+      "dimension": 34,
+      "test_silhouette": 0.297989,
+      "test_davies_bouldin": 1.451636,
+      "test_calinski_harabasz": 3872.339724,
+      "test_stability_mean_pairwise_ari": 0.998484,
+      "test_stability_pairwise_ari": [
+        0.999698,
+        0.999698,
+        0.996663,
+        1.0,
+        1.0,
+        0.996361,
+        0.999698,
+        0.996361,
+        0.999698,
+        0.996663
+      ],
+      "test_cluster_counts": [
+        1582,
+        2257,
+        1561,
+        1806,
+        1415
+      ]
+    },
+    "behavioral_temporal_fixed_weight": {
+      "components": [
+        "behavioral",
+        "temporal"
+      ],
+      "fusion": "train-fitted PCA to 32 dimensions, equal fixed weights, availability indicators",
+      "k": 5,
+      "dimension": 34,
+      "test_silhouette": 0.342977,
+      "test_davies_bouldin": 1.128105,
+      "test_calinski_harabasz": 4970.820732,
+      "test_stability_mean_pairwise_ari": 0.9949,
+      "test_stability_pairwise_ari": [
+        0.995203,
+        0.997497,
+        0.998553,
+        0.991812,
+        0.993312,
+        0.993766,
+        0.996599,
+        0.998944,
+        0.992182,
+        0.991131
+      ],
+      "test_cluster_counts": [
+        1236,
+        2868,
+        2097,
+        1101,
+        1319
+      ]
+    },
+    "text_temporal_fixed_weight": {
+      "components": [
+        "text",
+        "temporal"
+      ],
+      "fusion": "train-fitted PCA to 32 dimensions, equal fixed weights, availability indicators",
+      "k": 5,
+      "dimension": 34,
+      "test_silhouette": 0.557928,
+      "test_davies_bouldin": 0.779689,
+      "test_calinski_harabasz": 9113.6158,
+      "test_stability_mean_pairwise_ari": 1.0,
+      "test_stability_pairwise_ari": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "test_cluster_counts": [
+        2164,
+        481,
+        1224,
+        1517,
+        3235
+      ]
+    },
+    "behavioral_text_temporal_fixed_weight": {
+      "components": [
+        "behavioral",
+        "text",
+        "temporal"
+      ],
+      "fusion": "train-fitted PCA to 32 dimensions, equal fixed weights, availability indicators",
+      "k": 5,
+      "dimension": 35,
+      "test_silhouette": 0.30557,
+      "test_davies_bouldin": 1.245361,
+      "test_calinski_harabasz": 6564.488179,
+      "test_stability_mean_pairwise_ari": 0.998652,
+      "test_stability_pairwise_ari": [
+        0.998796,
+        0.999074,
+        0.998434,
+        0.999103,
+        0.999723,
+        0.997232,
+        0.999693,
+        0.99751,
+        0.999416,
+        0.997538
+      ],
+      "test_cluster_counts": [
+        1628,
+        1490,
+        1760,
+        2337,
+        1406
+      ]
+    }
+  },
+  "reproduction_command": "python -m src.phase9_fusion",
+  "limitations": [
+    "The static comparison evaluates geometry and stability; downstream retention utility remains a separate audited analysis.",
+    "The text view has substantial missingness and uses an explicit availability feature rather than imputing observed text."
+  ]
+}

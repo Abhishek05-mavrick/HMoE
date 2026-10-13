@@ -1,0 +1,1106 @@
+{
+  "manifest_version": "1.0",
+  "phase": "Phase 6: Classical Customer-Segmentation Baselines",
+  "timestamp": "2026-10-13T14:23:02.291004",
+  "k_selection_methodology": {
+    "RFM": {
+      "candidate_results": [
+        {
+          "k": 3,
+          "inertia": 57252.219591549496,
+          "silhouette": 0.5057,
+          "davies_bouldin": 0.7013,
+          "calinski_harabasz": 4987.7682
+        },
+        {
+          "k": 4,
+          "inertia": 38410.344729782766,
+          "silhouette": 0.5314,
+          "davies_bouldin": 0.6634,
+          "calinski_harabasz": 6047.9398
+        },
+        {
+          "k": 5,
+          "inertia": 32831.17727221173,
+          "silhouette": 0.5412,
+          "davies_bouldin": 0.6507,
+          "calinski_harabasz": 5799.6246
+        },
+        {
+          "k": 6,
+          "inertia": 27767.01050207455,
+          "silhouette": 0.4398,
+          "davies_bouldin": 0.7246,
+          "calinski_harabasz": 5664.2985
+        },
+        {
+          "k": 7,
+          "inertia": 23961.24408599676,
+          "silhouette": 0.4412,
+          "davies_bouldin": 0.7664,
+          "calinski_harabasz": 6424.6113
+        }
+      ],
+      "selected_k": 5,
+      "selection_criteria": "Highest Validation Silhouette Score with Elbow/DBI cross-validation"
+    },
+    "RFM_Selected_NonRedundant": {
+      "candidate_results": [
+        {
+          "k": 3,
+          "inertia": 231941.9457155615,
+          "silhouette": 0.3061,
+          "davies_bouldin": 1.6524,
+          "calinski_harabasz": 1655.2526
+        },
+        {
+          "k": 4,
+          "inertia": 205786.08957638068,
+          "silhouette": 0.2187,
+          "davies_bouldin": 1.5482,
+          "calinski_harabasz": 1684.3744
+        },
+        {
+          "k": 5,
+          "inertia": 178063.0061948782,
+          "silhouette": 0.3176,
+          "davies_bouldin": 1.279,
+          "calinski_harabasz": 1769.2495
+        },
+        {
+          "k": 6,
+          "inertia": 158941.93487401874,
+          "silhouette": 0.2585,
+          "davies_bouldin": 1.2103,
+          "calinski_harabasz": 1773.8568
+        },
+        {
+          "k": 7,
+          "inertia": 145948.54204292645,
+          "silhouette": 0.2676,
+          "davies_bouldin": 1.1359,
+          "calinski_harabasz": 1747.5964
+        }
+      ],
+      "selected_k": 5,
+      "selection_criteria": "Highest Validation Silhouette Score with Elbow/DBI cross-validation"
+    },
+    "GMM": {
+      "candidate_results": [
+        {
+          "k": 3,
+          "bic": -143693.27,
+          "aic": -144046.71,
+          "davies_bouldin": 1.987
+        },
+        {
+          "k": 4,
+          "bic": -158431.33,
+          "aic": -158904.95,
+          "davies_bouldin": 1.7456
+        },
+        {
+          "k": 5,
+          "bic": -207447.64,
+          "aic": -208041.43,
+          "davies_bouldin": 1.879
+        },
+        {
+          "k": 6,
+          "bic": -226023.81,
+          "aic": -226737.77,
+          "davies_bouldin": 1.9424
+        },
+        {
+          "k": 7,
+          "bic": -236797.78,
+          "aic": -237631.91,
+          "davies_bouldin": 1.9584
+        }
+      ],
+      "selected_k": 7,
+      "selection_criteria": "Minimum Bayesian Information Criterion (BIC)"
+    }
+  },
+  "baselines_evaluation": {
+    "Baseline_1_KMeans_RFM": {
+      "model_type": "KMeans",
+      "feature_set": "RFM",
+      "num_features": 3,
+      "num_clusters": 5,
+      "internal_metrics": {
+        "silhouette_score": 0.5314,
+        "davies_bouldin_index": 0.6182,
+        "calinski_harabasz_score": 7213.43
+      },
+      "stability_metrics": {
+        "mean_pairwise_ari": 0.9937,
+        "mean_pairwise_nmi": 0.9814
+      },
+      "downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 7.2742,
+        "cluster_retention_anova_p_val": 7.632208248049971e-06,
+        "cluster_spend_anova_f_stat": 12.8513,
+        "cluster_spend_anova_p_val": 1.9712288580711736e-10,
+        "max_retention_cluster": 0,
+        "max_retention_rate": 0.0471,
+        "min_retention_rate": 0.0,
+        "retention_lift": 3.76,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 255,
+            "retention_rate": 0.047058823529411764,
+            "mean_future_spend": 12.899372549019606,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.050980392156862744
+          },
+          {
+            "cluster": 1,
+            "customer_count": 3128,
+            "retention_rate": 0.010230179028132993,
+            "mean_future_spend": 1.7058727621483376,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.010549872122762148
+          },
+          {
+            "cluster": 2,
+            "customer_count": 332,
+            "retention_rate": 0.0030120481927710845,
+            "mean_future_spend": 0.2655120481927711,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.0030120481927710845
+          },
+          {
+            "cluster": 3,
+            "customer_count": 4859,
+            "retention_rate": 0.01296563078822803,
+            "mean_future_spend": 1.610479522535501,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.013994649104754064
+          },
+          {
+            "cluster": 4,
+            "customer_count": 47,
+            "retention_rate": 0.0,
+            "mean_future_spend": 0.0,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.0
+          }
+        ]
+      },
+      "cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 255,
+          "customer_pct": 2.9578935158334296,
+          "median_recency_days": 130.3369097222222,
+          "mean_frequency_orders": 2.0980392156862746,
+          "median_spend": 219.67000000000002,
+          "mean_items": 2.3372549019607844,
+          "median_installments": 2.5,
+          "median_delivery_days": 11.239716435185185,
+          "mean_review_score": 4.2202231520223155,
+          "future_retention_rate": 0.047058823529411764
+        },
+        {
+          "cluster": 1,
+          "customer_count": 3128,
+          "customer_pct": 36.28349379422341,
+          "median_recency_days": 273.2708622685185,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 95.505,
+          "mean_items": 1.1010230179028133,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.376435185185185,
+          "mean_review_score": 4.157801418439717,
+          "future_retention_rate": 0.010230179028132993
+        },
+        {
+          "cluster": 2,
+          "customer_count": 332,
+          "customer_pct": 3.851061361790976,
+          "median_recency_days": 132.67262152777778,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 652.69,
+          "mean_items": 1.3614457831325302,
+          "median_installments": 5.0,
+          "median_delivery_days": 12.284039351851852,
+          "mean_review_score": 4.0,
+          "future_retention_rate": 0.0030120481927710845
+        },
+        {
+          "cluster": 3,
+          "customer_count": 4859,
+          "customer_pct": 56.362370954645634,
+          "median_recency_days": 81.18908564814815,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 98.31,
+          "mean_items": 1.0987857583864993,
+          "median_installments": 1.0,
+          "median_delivery_days": 11.319542824074073,
+          "mean_review_score": 4.067061831706183,
+          "future_retention_rate": 0.01296563078822803
+        },
+        {
+          "cluster": 4,
+          "customer_count": 47,
+          "customer_pct": 0.5451803735065538,
+          "median_recency_days": 175.22671296296295,
+          "mean_frequency_orders": 1.0638297872340425,
+          "median_spend": 1944.86,
+          "mean_items": 1.7659574468085106,
+          "median_installments": 6.0,
+          "median_delivery_days": 12.774976851851852,
+          "mean_review_score": 3.688888888888889,
+          "future_retention_rate": 0.0
+        }
+      ]
+    },
+    "Baseline_2_KMeans_RFM_Behavioral": {
+      "model_type": "KMeans",
+      "feature_set": "RFM_Behavioral",
+      "num_features": 7,
+      "num_clusters": 4,
+      "internal_metrics": {
+        "silhouette_score": 0.3379,
+        "davies_bouldin_index": 1.0759,
+        "calinski_harabasz_score": 2691.23
+      },
+      "stability_metrics": {
+        "mean_pairwise_ari": 0.9998,
+        "mean_pairwise_nmi": 0.9994
+      },
+      "downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 7.2248,
+        "cluster_retention_anova_p_val": 7.719025041753878e-05,
+        "cluster_spend_anova_f_stat": 11.4809,
+        "cluster_spend_anova_p_val": 1.650072352858084e-07,
+        "max_retention_cluster": 3,
+        "max_retention_rate": 0.0433,
+        "min_retention_rate": 0.0096,
+        "retention_lift": 3.46,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 2714,
+            "retention_rate": 0.009579955784819455,
+            "mean_future_spend": 1.7846462785556374,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.009579955784819455
+          },
+          {
+            "cluster": 1,
+            "customer_count": 1259,
+            "retention_rate": 0.011119936457505957,
+            "mean_future_spend": 1.24,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011914217633042097
+          },
+          {
+            "cluster": 2,
+            "customer_count": 4394,
+            "retention_rate": 0.01297223486572599,
+            "mean_future_spend": 1.6714269458352298,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.014110150204824761
+          },
+          {
+            "cluster": 3,
+            "customer_count": 254,
+            "retention_rate": 0.04330708661417323,
+            "mean_future_spend": 10.983622047244095,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.047244094488188976
+          }
+        ]
+      },
+      "cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 2714,
+          "customer_pct": 31.48126667439972,
+          "median_recency_days": 275.3276909722222,
+          "mean_frequency_orders": 1.005526897568165,
+          "median_spend": 84.62,
+          "mean_items": 1.0792188651436994,
+          "median_installments": 1.0,
+          "median_delivery_days": 10.451342592592592,
+          "mean_review_score": 4.166419019316494,
+          "future_retention_rate": 0.009579955784819455
+        },
+        {
+          "cluster": 1,
+          "customer_count": 1259,
+          "customer_pct": 14.60387426052662,
+          "median_recency_days": 154.46096064814813,
+          "mean_frequency_orders": 1.0127084988085782,
+          "median_spend": 232.70999999999998,
+          "mean_items": 1.2255758538522636,
+          "median_installments": 8.0,
+          "median_delivery_days": 11.707534722222222,
+          "mean_review_score": 4.020833333333334,
+          "future_retention_rate": 0.011119936457505957
+        },
+        {
+          "cluster": 2,
+          "customer_count": 4394,
+          "customer_pct": 50.96856513165526,
+          "median_recency_days": 80.04034143518518,
+          "mean_frequency_orders": 1.0059171597633136,
+          "median_spend": 91.055,
+          "mean_items": 1.0912608101957215,
+          "median_installments": 1.0,
+          "median_delivery_days": 11.227372685185184,
+          "mean_review_score": 4.0956980937661,
+          "future_retention_rate": 0.01297223486572599
+        },
+        {
+          "cluster": 3,
+          "customer_count": 254,
+          "customer_pct": 2.946293933418397,
+          "median_recency_days": 122.31129629629629,
+          "mean_frequency_orders": 1.889763779527559,
+          "median_spend": 229.925,
+          "mean_items": 2.547244094488189,
+          "median_installments": 3.0,
+          "median_delivery_days": 10.485260416666666,
+          "mean_review_score": 3.885277777777778,
+          "future_retention_rate": 0.04330708661417323
+        }
+      ]
+    },
+    "Baseline_3_KMeans_RFM_Selected_NonRedundant": {
+      "model_type": "KMeans",
+      "feature_set": "RFM_Selected_NonRedundant",
+      "num_features": 8,
+      "num_clusters": 5,
+      "internal_metrics": {
+        "silhouette_score": 0.3253,
+        "davies_bouldin_index": 1.2518,
+        "calinski_harabasz_score": 1865.92
+      },
+      "stability_metrics": {
+        "mean_pairwise_ari": 0.6034,
+        "mean_pairwise_nmi": 0.7136
+      },
+      "downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 6.3845,
+        "cluster_retention_anova_p_val": 3.984566889452564e-05,
+        "cluster_spend_anova_f_stat": 12.9022,
+        "cluster_spend_anova_p_val": 1.7884251367181513e-10,
+        "max_retention_cluster": 2,
+        "max_retention_rate": 0.0465,
+        "min_retention_rate": 0.009,
+        "retention_lift": 3.71,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 1189,
+            "retention_rate": 0.011774600504625737,
+            "mean_future_spend": 1.517375946173255,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.012615643397813289
+          },
+          {
+            "cluster": 1,
+            "customer_count": 5275,
+            "retention_rate": 0.011753554502369668,
+            "mean_future_spend": 1.6403469194312796,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.012511848341232227
+          },
+          {
+            "cluster": 2,
+            "customer_count": 258,
+            "retention_rate": 0.046511627906976744,
+            "mean_future_spend": 12.74937984496124,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.050387596899224806
+          },
+          {
+            "cluster": 3,
+            "customer_count": 1105,
+            "retention_rate": 0.00904977375565611,
+            "mean_future_spend": 0.7659366515837104,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.00904977375565611
+          },
+          {
+            "cluster": 4,
+            "customer_count": 794,
+            "retention_rate": 0.012594458438287154,
+            "mean_future_spend": 2.4509949622166247,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.013853904282115869
+          }
+        ]
+      },
+      "cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 1189,
+          "customer_pct": 13.791903491474306,
+          "median_recency_days": 173.0192361111111,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 212.32000000000002,
+          "mean_items": 1.015138772077376,
+          "median_installments": 8.0,
+          "median_delivery_days": 11.574166666666667,
+          "mean_review_score": 4.388888888888889,
+          "future_retention_rate": 0.011774600504625737
+        },
+        {
+          "cluster": 1,
+          "customer_count": 5275,
+          "customer_pct": 61.18779723929938,
+          "median_recency_days": 131.15984953703702,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 81.63000000000001,
+          "mean_items": 1.0036018957345971,
+          "median_installments": 1.0,
+          "median_delivery_days": 10.114583333333332,
+          "mean_review_score": 4.6675338189386055,
+          "future_retention_rate": 0.011753554502369668
+        },
+        {
+          "cluster": 2,
+          "customer_count": 258,
+          "customer_pct": 2.992692263078529,
+          "median_recency_days": 128.38619212962962,
+          "mean_frequency_orders": 2.0968992248062017,
+          "median_spend": 220.76999999999998,
+          "mean_items": 2.395348837209302,
+          "median_installments": 2.583333333333333,
+          "median_delivery_days": 11.244522569444445,
+          "mean_review_score": 4.221625344352617,
+          "future_retention_rate": 0.046511627906976744
+        },
+        {
+          "cluster": 3,
+          "customer_count": 1105,
+          "customer_pct": 12.81753856861153,
+          "median_recency_days": 132.20453703703703,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 102.03,
+          "mean_items": 1.0171945701357465,
+          "median_installments": 2.0,
+          "median_delivery_days": 19.177413194444444,
+          "mean_review_score": 1.808529945553539,
+          "future_retention_rate": 0.00904977375565611
+        },
+        {
+          "cluster": 4,
+          "customer_count": 794,
+          "customer_pct": 9.210068437536249,
+          "median_recency_days": 134.56195601851852,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 150.83,
+          "mean_items": 2.104534005037783,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.144265046296296,
+          "mean_review_score": 3.367667121418827,
+          "future_retention_rate": 0.012594458438287154
+        }
+      ]
+    },
+    "Baseline_4_KMeans_RFM_All_Engineered": {
+      "model_type": "KMeans",
+      "feature_set": "RFM_All_Engineered",
+      "num_features": 16,
+      "num_clusters": 4,
+      "internal_metrics": {
+        "silhouette_score": 0.5096,
+        "davies_bouldin_index": 1.1484,
+        "calinski_harabasz_score": 1646.96
+      },
+      "stability_metrics": {
+        "mean_pairwise_ari": 0.9996,
+        "mean_pairwise_nmi": 0.9988
+      },
+      "downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 7.6744,
+        "cluster_retention_anova_p_val": 4.050208643536364e-05,
+        "cluster_spend_anova_f_stat": 13.0318,
+        "cluster_spend_anova_p_val": 1.72797354544114e-08,
+        "max_retention_cluster": 3,
+        "max_retention_rate": 0.0449,
+        "min_retention_rate": 0.0037,
+        "retention_lift": 3.58,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 7298,
+            "retention_rate": 0.011647026582625376,
+            "mean_future_spend": 1.536749794464237,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.012332145793368046
+          },
+          {
+            "cluster": 1,
+            "customer_count": 269,
+            "retention_rate": 0.0037174721189591076,
+            "mean_future_spend": 0.32769516728624537,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.0037174721189591076
+          },
+          {
+            "cluster": 2,
+            "customer_count": 809,
+            "retention_rate": 0.013597033374536464,
+            "mean_future_spend": 3.0229789864029666,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.014833127317676144
+          },
+          {
+            "cluster": 3,
+            "customer_count": 245,
+            "retention_rate": 0.044897959183673466,
+            "mean_future_spend": 11.387102040816327,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.04897959183673469
+          }
+        ]
+      },
+      "cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 7298,
+          "customer_pct": 84.65375246491126,
+          "median_recency_days": 137.30630787037035,
+          "mean_frequency_orders": 1.0004110715264456,
+          "median_spend": 93.97,
+          "mean_items": 1.0030145245272677,
+          "median_installments": 2.0,
+          "median_delivery_days": 11.020381944444443,
+          "mean_review_score": 4.189235085646781,
+          "future_retention_rate": 0.011647026582625376
+        },
+        {
+          "cluster": 1,
+          "customer_count": 269,
+          "customer_pct": 3.120287669643893,
+          "median_recency_days": 138.5920486111111,
+          "mean_frequency_orders": 1.0223048327137547,
+          "median_spend": 802.65,
+          "mean_items": 1.1561338289962826,
+          "median_installments": 7.0,
+          "median_delivery_days": 13.211707175925925,
+          "mean_review_score": 4.004,
+          "future_retention_rate": 0.0037174721189591076
+        },
+        {
+          "cluster": 2,
+          "customer_count": 809,
+          "customer_pct": 9.384062173761745,
+          "median_recency_days": 134.47668981481482,
+          "mean_frequency_orders": 1.065512978986403,
+          "median_spend": 148.14,
+          "mean_items": 2.0778739184178,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.258912037037037,
+          "mean_review_score": 3.401433691756272,
+          "future_retention_rate": 0.013597033374536464
+        },
+        {
+          "cluster": 3,
+          "customer_count": 245,
+          "customer_pct": 2.841897691683099,
+          "median_recency_days": 124.5187037037037,
+          "mean_frequency_orders": 1.9020408163265305,
+          "median_spend": 223.67000000000002,
+          "mean_items": 2.4571428571428573,
+          "median_installments": 3.0,
+          "median_delivery_days": 10.395509259259258,
+          "mean_review_score": 3.9114942528735632,
+          "future_retention_rate": 0.044897959183673466
+        }
+      ]
+    },
+    "Baseline_5_GMM": {
+      "model_type": "GaussianMixture",
+      "feature_set": "RFM_Selected_NonRedundant",
+      "num_features": 8,
+      "num_clusters": 7,
+      "internal_metrics": {
+        "silhouette_score": 0.0784,
+        "davies_bouldin_index": 1.913,
+        "calinski_harabasz_score": 930.07
+      },
+      "stability_metrics": {
+        "mean_pairwise_ari": 0.5582,
+        "mean_pairwise_nmi": 0.6393
+      },
+      "downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 2.8823,
+        "cluster_retention_anova_p_val": 0.0083053768596821,
+        "cluster_spend_anova_f_stat": 5.5447,
+        "cluster_spend_anova_p_val": 9.545110509267848e-06,
+        "max_retention_cluster": 2,
+        "max_retention_rate": 0.0335,
+        "min_retention_rate": 0.01,
+        "retention_lift": 2.67,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 1143,
+            "retention_rate": 0.010498687664041995,
+            "mean_future_spend": 1.0529746281714785,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.010498687664041995
+          },
+          {
+            "cluster": 1,
+            "customer_count": 594,
+            "retention_rate": 0.010101010101010102,
+            "mean_future_spend": 1.4412794612794613,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011784511784511785
+          },
+          {
+            "cluster": 2,
+            "customer_count": 418,
+            "retention_rate": 0.03349282296650718,
+            "mean_future_spend": 8.642775119617225,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.03827751196172249
+          },
+          {
+            "cluster": 3,
+            "customer_count": 2737,
+            "retention_rate": 0.01278772378516624,
+            "mean_future_spend": 1.799773474607234,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.013153087321885276
+          },
+          {
+            "cluster": 4,
+            "customer_count": 602,
+            "retention_rate": 0.009966777408637873,
+            "mean_future_spend": 2.1337873754152823,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.009966777408637873
+          },
+          {
+            "cluster": 5,
+            "customer_count": 3039,
+            "retention_rate": 0.01085883514313919,
+            "mean_future_spend": 1.4207634090161236,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011846001974333662
+          },
+          {
+            "cluster": 6,
+            "customer_count": 88,
+            "retention_rate": 0.022727272727272728,
+            "mean_future_spend": 3.843295454545455,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.022727272727272728
+          }
+        ]
+      },
+      "cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 1143,
+          "customer_pct": 13.258322700382784,
+          "median_recency_days": 150.38493055555554,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 102.03,
+          "mean_items": 1.0,
+          "median_installments": 3.0,
+          "median_delivery_days": 12.902997685185184,
+          "mean_review_score": 2.9758983347940404,
+          "future_retention_rate": 0.010498687664041995
+        },
+        {
+          "cluster": 1,
+          "customer_count": 594,
+          "customer_pct": 6.890151954529637,
+          "median_recency_days": 161.7866261574074,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 361.01,
+          "mean_items": 1.0,
+          "median_installments": 8.0,
+          "median_delivery_days": 13.13990162037037,
+          "mean_review_score": 3.2810344827586206,
+          "future_retention_rate": 0.010101010101010102
+        },
+        {
+          "cluster": 2,
+          "customer_count": 418,
+          "customer_pct": 4.848625449483818,
+          "median_recency_days": 126.7254398148148,
+          "mean_frequency_orders": 1.6770334928229664,
+          "median_spend": 232.56,
+          "mean_items": 2.8636363636363638,
+          "median_installments": 2.5,
+          "median_delivery_days": 10.94130787037037,
+          "mean_review_score": 3.828547008547009,
+          "future_retention_rate": 0.03349282296650718
+        },
+        {
+          "cluster": 3,
+          "customer_count": 2737,
+          "customer_pct": 31.748057069945478,
+          "median_recency_days": 138.1028472222222,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 140.23000000000002,
+          "mean_items": 1.0,
+          "median_installments": 3.0,
+          "median_delivery_days": 10.17515625,
+          "mean_review_score": 5.0,
+          "future_retention_rate": 0.01278772378516624
+        },
+        {
+          "cluster": 4,
+          "customer_count": 602,
+          "customer_pct": 6.982948613849901,
+          "median_recency_days": 138.02302083333333,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 152.81,
+          "mean_items": 2.0,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.056909722222223,
+          "mean_review_score": 3.6504504504504505,
+          "future_retention_rate": 0.009966777408637873
+        },
+        {
+          "cluster": 5,
+          "customer_count": 3039,
+          "customer_pct": 35.25113095928546,
+          "median_recency_days": 126.92886574074073,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 64.9,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 11.028043981481481,
+          "mean_review_score": 4.15718827269516,
+          "future_retention_rate": 0.01085883514313919
+        },
+        {
+          "cluster": 6,
+          "customer_count": 88,
+          "customer_pct": 1.0207632525229091,
+          "median_recency_days": 145.8443287037037,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 0.0,
+          "mean_items": 0.0,
+          "median_installments": 1.0,
+          "median_delivery_days": null,
+          "mean_review_score": 1.5061728395061729,
+          "future_retention_rate": 0.022727272727272728
+        }
+      ]
+    },
+    "Baseline_6_HDBSCAN": {
+      "model_type": "HDBSCAN",
+      "feature_set": "RFM_Selected_NonRedundant",
+      "num_features": 8,
+      "num_clusters": 6,
+      "internal_metrics": {
+        "silhouette_score": 0.1209,
+        "davies_bouldin_index": 1.9047,
+        "calinski_harabasz_score": 1497.21
+      },
+      "stability_metrics": {
+        "mean_pairwise_ari": 1.0,
+        "mean_pairwise_nmi": 1.0
+      },
+      "downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 0.9385,
+        "cluster_retention_anova_p_val": 0.4546599720235035,
+        "cluster_spend_anova_f_stat": 2.8385,
+        "cluster_spend_anova_p_val": 0.014509445911542955,
+        "max_retention_cluster": 0,
+        "max_retention_rate": 0.026,
+        "min_retention_rate": 0.0092,
+        "retention_lift": 2.07,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 231,
+            "retention_rate": 0.025974025974025976,
+            "mean_future_spend": 6.053160173160173,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.025974025974025976
+          },
+          {
+            "cluster": 1,
+            "customer_count": 625,
+            "retention_rate": 0.0112,
+            "mean_future_spend": 2.17536,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.0128
+          },
+          {
+            "cluster": 2,
+            "customer_count": 267,
+            "retention_rate": 0.011235955056179775,
+            "mean_future_spend": 1.0442322097378278,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011235955056179775
+          },
+          {
+            "cluster": 3,
+            "customer_count": 326,
+            "retention_rate": 0.009202453987730062,
+            "mean_future_spend": 0.9096319018404908,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.009202453987730062
+          },
+          {
+            "cluster": 4,
+            "customer_count": 839,
+            "retention_rate": 0.014302741358760428,
+            "mean_future_spend": 1.7653992848629319,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.015494636471990465
+          },
+          {
+            "cluster": 5,
+            "customer_count": 3699,
+            "retention_rate": 0.011084076777507435,
+            "mean_future_spend": 1.4550554203838875,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011895106785617735
+          }
+        ]
+      },
+      "cluster_profiles": [
+        {
+          "cluster": -1,
+          "customer_count": 2634,
+          "customer_pct": 30.553300081197076,
+          "median_recency_days": 174.37509259259258,
+          "mean_frequency_orders": 1.0197418375094913,
+          "median_spend": 176.875,
+          "mean_items": 1.1066818526955202,
+          "median_installments": 4.0,
+          "median_delivery_days": 14.661944444444444,
+          "mean_review_score": 3.5512840568374395,
+          "future_retention_rate": 0.01366742596810934
+        },
+        {
+          "cluster": 0,
+          "customer_count": 231,
+          "customer_pct": 2.6795035378726366,
+          "median_recency_days": 125.37229166666665,
+          "mean_frequency_orders": 2.0,
+          "median_spend": 213.10000000000002,
+          "mean_items": 2.2034632034632033,
+          "median_installments": 3.0,
+          "median_delivery_days": 11.19449074074074,
+          "mean_review_score": 4.1981566820276495,
+          "future_retention_rate": 0.025974025974025976
+        },
+        {
+          "cluster": 1,
+          "customer_count": 625,
+          "customer_pct": 7.249739009395661,
+          "median_recency_days": 134.2099074074074,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 153.32,
+          "mean_items": 2.1744,
+          "median_installments": 2.0,
+          "median_delivery_days": 9.985972222222221,
+          "mean_review_score": 3.700174825174825,
+          "future_retention_rate": 0.0112
+        },
+        {
+          "cluster": 2,
+          "customer_count": 267,
+          "customer_pct": 3.0970885048138266,
+          "median_recency_days": 96.06799768518518,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 81.63000000000001,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 13.619270833333331,
+          "mean_review_score": 1.0,
+          "future_retention_rate": 0.011235955056179775
+        },
+        {
+          "cluster": 3,
+          "customer_count": 326,
+          "customer_pct": 3.7814638673007774,
+          "median_recency_days": 119.19276041666666,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 74.05,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 12.658726851851851,
+          "mean_review_score": 3.0,
+          "future_retention_rate": 0.009202453987730062
+        },
+        {
+          "cluster": 4,
+          "customer_count": 839,
+          "customer_pct": 9.732049646212735,
+          "median_recency_days": 138.53024305555556,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 72.45,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 10.816799768518518,
+          "mean_review_score": 4.0,
+          "future_retention_rate": 0.014302741358760428
+        },
+        {
+          "cluster": 5,
+          "customer_count": 3699,
+          "customer_pct": 42.906855353207284,
+          "median_recency_days": 115.17167824074073,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 78.91,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 9.59554398148148,
+          "mean_review_score": 4.9998447204968945,
+          "future_retention_rate": 0.011084076777507435
+        }
+      ]
+    },
+    "Baseline_7_DEC": {
+      "model_type": "DEC",
+      "feature_set": "RFM_Selected_NonRedundant",
+      "num_features": 8,
+      "num_clusters": 5,
+      "internal_metrics": {
+        "silhouette_score": 0.1429,
+        "davies_bouldin_index": 1.6039,
+        "calinski_harabasz_score": 1490.72
+      },
+      "stability_metrics": {
+        "mean_pairwise_ari": 0.5829,
+        "mean_pairwise_nmi": 0.66
+      },
+      "downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 6.3273,
+        "cluster_retention_anova_p_val": 4.429077632709385e-05,
+        "cluster_spend_anova_f_stat": 12.8855,
+        "cluster_spend_anova_p_val": 1.8464177732335582e-10,
+        "max_retention_cluster": 3,
+        "max_retention_rate": 0.0465,
+        "min_retention_rate": 0.0104,
+        "retention_lift": 3.71,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 2330,
+            "retention_rate": 0.01201716738197425,
+            "mean_future_spend": 1.3938454935622318,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.013304721030042918
+          },
+          {
+            "cluster": 1,
+            "customer_count": 2881,
+            "retention_rate": 0.010413051023950017,
+            "mean_future_spend": 1.221464769177369,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011107254425546685
+          },
+          {
+            "cluster": 2,
+            "customer_count": 2351,
+            "retention_rate": 0.011909825606125054,
+            "mean_future_spend": 1.9296682262866864,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011909825606125054
+          },
+          {
+            "cluster": 3,
+            "customer_count": 258,
+            "retention_rate": 0.046511627906976744,
+            "mean_future_spend": 12.74937984496124,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.050387596899224806
+          },
+          {
+            "cluster": 4,
+            "customer_count": 801,
+            "retention_rate": 0.012484394506866416,
+            "mean_future_spend": 2.4295755305867663,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.01373283395755306
+          }
+        ]
+      },
+      "cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 2330,
+          "customer_pct": 27.027027027027028,
+          "median_recency_days": 54.340439814814815,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 87.125,
+          "mean_items": 1.0017167381974248,
+          "median_installments": 1.0,
+          "median_delivery_days": 10.942962962962962,
+          "mean_review_score": 5.0,
+          "future_retention_rate": 0.01201716738197425
+        },
+        {
+          "cluster": 1,
+          "customer_count": 2881,
+          "customer_pct": 33.41839693771024,
+          "median_recency_days": 142.48902777777778,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 100.08,
+          "mean_items": 1.01041305102395,
+          "median_installments": 2.0,
+          "median_delivery_days": 12.894837962962962,
+          "mean_review_score": 2.994967025338424,
+          "future_retention_rate": 0.010413051023950017
+        },
+        {
+          "cluster": 2,
+          "customer_count": 2351,
+          "customer_pct": 27.27061825774272,
+          "median_recency_days": 236.08274305555554,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 105.28,
+          "mean_items": 1.006380263717567,
+          "median_installments": 3.0,
+          "median_delivery_days": 9.727141203703702,
+          "mean_review_score": 5.0,
+          "future_retention_rate": 0.011909825606125054
+        },
+        {
+          "cluster": 3,
+          "customer_count": 258,
+          "customer_pct": 2.992692263078529,
+          "median_recency_days": 128.38619212962962,
+          "mean_frequency_orders": 2.0968992248062017,
+          "median_spend": 220.76999999999998,
+          "mean_items": 2.395348837209302,
+          "median_installments": 2.583333333333333,
+          "median_delivery_days": 11.244522569444445,
+          "mean_review_score": 4.221625344352617,
+          "future_retention_rate": 0.046511627906976744
+        },
+        {
+          "cluster": 4,
+          "customer_count": 801,
+          "customer_pct": 9.291265514441479,
+          "median_recency_days": 134.47668981481482,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 150.60000000000002,
+          "mean_items": 2.1036204744069913,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.198217592592592,
+          "mean_review_score": 3.3516260162601625,
+          "future_retention_rate": 0.012484394506866416
+        }
+      ]
+    }
+  }
+}

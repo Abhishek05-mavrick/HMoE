@@ -1,0 +1,125 @@
+{
+  "phase": "Phase 12: multimodal fusion research question",
+  "research_question": "When does multimodal fusion help beyond a temporal-only representation?",
+  "input_artifacts": [
+    "data/gold/temporal_customer_cohort.parquet",
+    "data/gold/temporal_customer_profiles_cutoff.parquet",
+    "data/processed/customer_text_view.parquet",
+    "data/embeddings/phase8_temporal_embeddings.parquet",
+    "data/gold/reports/phase9_fusion_manifest.json"
+  ],
+  "protocol": {
+    "cohort_count": 57510,
+    "train_count": 40208,
+    "validation_count": 8681,
+    "test_count": 8621,
+    "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+    "k": 5,
+    "clustering": "KMeans(n_clusters=5, n_init=10), fit on train and predict on test",
+    "stability": "For each seed, refit KMeans on training customers, predict the same test customers, then compute pairwise label-permutation-invariant ARI.",
+    "distance_metric": "Euclidean for all internal clustering metrics",
+    "test_outcomes_used_for_selection": false
+  },
+  "availability": {
+    "text_available_count": 22535,
+    "text_missing_count": 34975,
+    "temporal_available_count": 57510,
+    "aware_protocol": "Projected text and temporal views averaged with explicit text and temporal availability indicators.",
+    "indicator_free_protocol": "Text availability indicator removed; unavailable text remains a zero projected vector after train-fitted PCA."
+  },
+  "results": {
+    "temporal_only": {
+      "dimension": 32,
+      "metric_family": "Euclidean distance used by silhouette, Davies-Bouldin, and CH",
+      "test_silhouette": 0.596058,
+      "test_davies_bouldin": 0.663541,
+      "test_calinski_harabasz": 18176.655634,
+      "test_stability_mean_pairwise_ari": 1.0,
+      "test_stability_pairwise_ari": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "test_cluster_counts": [
+        655,
+        2188,
+        4677,
+        596,
+        505
+      ],
+      "silhouette_delta_vs_temporal": 0.0,
+      "stability_delta_vs_temporal": 0.0
+    },
+    "text_temporal_availability_aware": {
+      "dimension": 34,
+      "metric_family": "Euclidean distance used by silhouette, Davies-Bouldin, and CH",
+      "test_silhouette": 0.557928,
+      "test_davies_bouldin": 0.779689,
+      "test_calinski_harabasz": 9113.6158,
+      "test_stability_mean_pairwise_ari": 1.0,
+      "test_stability_pairwise_ari": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "test_cluster_counts": [
+        2164,
+        481,
+        1224,
+        1517,
+        3235
+      ],
+      "silhouette_delta_vs_temporal": -0.03813,
+      "stability_delta_vs_temporal": 0.0
+    },
+    "text_temporal_indicator_free": {
+      "dimension": 32,
+      "metric_family": "Euclidean distance used by silhouette, Davies-Bouldin, and CH",
+      "test_silhouette": 0.31927,
+      "test_davies_bouldin": 1.270539,
+      "test_calinski_harabasz": 5502.779477,
+      "test_stability_mean_pairwise_ari": 0.86225,
+      "test_stability_pairwise_ari": [
+        0.998958,
+        0.99923,
+        0.997695,
+        0.657387,
+        0.999728,
+        0.998104,
+        0.657656,
+        0.997832,
+        0.657428,
+        0.658478
+      ],
+      "test_cluster_counts": [
+        776,
+        2527,
+        3242,
+        714,
+        1362
+      ],
+      "silhouette_delta_vs_temporal": -0.276788,
+      "stability_delta_vs_temporal": -0.13775
+    }
+  },
+  "interpretation": {
+    "text_adds_reproducible_value": false,
+    "retention_claim_status": "Not assessed for model selection; behavioral-heavy retention finding remains exploratory until an independent holdout confirms it."
+  },
+  "results_are_descriptive": true,
+  "reproduction_command": "python -m src.phase12_fusion_question"
+}

@@ -1,0 +1,894 @@
+{
+  "phase": "Phase 9 audit",
+  "source_phase9_manifest": "data/gold/reports/phase9_fusion_manifest.json",
+  "issues": [
+    {
+      "id": "A1",
+      "issue": "Full normalized concatenation mean pairwise ARI was absent from the human-readable table.",
+      "resolution": "Recovered from the machine-readable manifest and independently recomputed.",
+      "evidence": {
+        "test_silhouette": 0.206452,
+        "test_cluster_counts": [
+          2741,
+          1821,
+          1168,
+          2218,
+          673
+        ],
+        "mean_pairwise_ari": 0.999585,
+        "pairwise_ari": [
+          0.998962,
+          1.0,
+          1.0,
+          1.0,
+          0.998962,
+          0.998962,
+          0.998962,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "cohort_count": 57510,
+        "train_count": 40208,
+        "validation_count": 8681,
+        "test_count": 8621,
+        "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+        "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+      },
+      "remaining_limitation": "The original report table omitted the value; the manifest retained it."
+    },
+    {
+      "id": "A2",
+      "issue": "Documented text-only includes an availability indicator.",
+      "resolution": "Retained the original result and added an indicator-free sensitivity result.",
+      "evidence": {
+        "documented": {
+          "test_silhouette": 0.624421,
+          "test_cluster_counts": [
+            1419,
+            5233,
+            479,
+            942,
+            548
+          ],
+          "mean_pairwise_ari": 0.990473,
+          "pairwise_ari": [
+            0.991987,
+            0.981295,
+            0.999202,
+            0.999202,
+            0.988407,
+            0.991483,
+            0.991483,
+            0.980834,
+            0.980834,
+            1.0
+          ],
+          "cohort_count": 57510,
+          "train_count": 40208,
+          "validation_count": 8681,
+          "test_count": 8621,
+          "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+          "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+        },
+        "without_indicator": {
+          "test_silhouette": 0.476372,
+          "test_cluster_counts": [
+            7207,
+            435,
+            529,
+            243,
+            207
+          ],
+          "mean_pairwise_ari": 0.760463,
+          "pairwise_ari": [
+            0.535955,
+            0.6244,
+            0.648222,
+            0.624388,
+            0.74793,
+            0.727988,
+            0.747418,
+            0.974186,
+            0.99784,
+            0.976309
+          ],
+          "cohort_count": 57510,
+          "train_count": 40208,
+          "validation_count": 8681,
+          "test_count": 8621,
+          "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+          "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+        }
+      },
+      "remaining_limitation": "The text-only label should be read as text-plus-availability for the original result."
+    },
+    {
+      "id": "A3",
+      "issue": "Per-cluster profiles and imbalance diagnostics were not previously reported.",
+      "resolution": "Added profiles for behavioral, text-only, temporal-only, and full documented fusion.",
+      "evidence": "cluster_profiles below",
+      "remaining_limitation": "Profiles describe blind-test assignments and are not causal analyses."
+    }
+  ],
+  "cohort_and_split": {
+    "cohort_count": 57510,
+    "train_count": 40208,
+    "validation_count": 8681,
+    "test_count": 8621,
+    "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+    "all_experiments_same_population": true
+  },
+  "learned_transformation_audit": {
+    "behavioral_scaler_fit_rows": 40208,
+    "text_scaler_fit_rows": 15813,
+    "temporal_scaler_fit_rows": 40208,
+    "pca_fit_split": "train only",
+    "encoder_fit_split": "train only; documented in Phase 8 manifest",
+    "test_outcomes_used_for_transforms": false
+  },
+  "stability_audit": {
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "metric": "adjusted Rand index, label-permutation invariant",
+    "assignment_alignment": "same ordered test customer IDs for every seed and variant",
+    "independent_runs": true
+  },
+  "availability_audit": {
+    "text_available_count": 22535,
+    "text_missing_count": 34975,
+    "temporal_available_count": 57510,
+    "indicator_sensitivity": {
+      "test_silhouette": 0.476372,
+      "test_cluster_counts": [
+        7207,
+        435,
+        529,
+        243,
+        207
+      ],
+      "mean_pairwise_ari": 0.760463,
+      "pairwise_ari": [
+        0.535955,
+        0.6244,
+        0.648222,
+        0.624388,
+        0.74793,
+        0.727988,
+        0.747418,
+        0.974186,
+        0.99784,
+        0.976309
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    },
+    "documented_text_result": {
+      "test_silhouette": 0.624421,
+      "test_cluster_counts": [
+        1419,
+        5233,
+        479,
+        942,
+        548
+      ],
+      "mean_pairwise_ari": 0.990473,
+      "pairwise_ari": [
+        0.991987,
+        0.981295,
+        0.999202,
+        0.999202,
+        0.988407,
+        0.991483,
+        0.991483,
+        0.980834,
+        0.980834,
+        1.0
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    }
+  },
+  "retention_protocol": {
+    "target": "future_is_retained = 1 iff future_orders_count > 0",
+    "window": "[2018-03-01T00:00:00, 2018-09-01T00:00:00)",
+    "cohort_retained_count": 684,
+    "cohort_count": 57510,
+    "future_outcomes_used_for_representation_or_selection": false,
+    "downstream_use": "descriptive audit only; no test-driven tuning performed"
+  },
+  "previous_test_set_exploration": "Phase 6 exploratory baseline work and the prior Phase 8/9 geometry evaluations used the blind test for reporting. This is disclosed and the Phase 9 audit does not retune models or select configurations from new test outcomes.",
+  "results": {
+    "behavioral_only": {
+      "test_silhouette": 0.417657,
+      "test_cluster_counts": [
+        2432,
+        2897,
+        1746,
+        589,
+        957
+      ],
+      "mean_pairwise_ari": 0.999362,
+      "pairwise_ari": [
+        0.999401,
+        0.999701,
+        0.998826,
+        0.999757,
+        0.999701,
+        0.999424,
+        0.999158,
+        0.999125,
+        0.999458,
+        0.999069
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    },
+    "text_only_documented": {
+      "test_silhouette": 0.624421,
+      "test_cluster_counts": [
+        1419,
+        5233,
+        479,
+        942,
+        548
+      ],
+      "mean_pairwise_ari": 0.990473,
+      "pairwise_ari": [
+        0.991987,
+        0.981295,
+        0.999202,
+        0.999202,
+        0.988407,
+        0.991483,
+        0.991483,
+        0.980834,
+        0.980834,
+        1.0
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    },
+    "temporal_only": {
+      "test_silhouette": 0.596058,
+      "test_cluster_counts": [
+        655,
+        2188,
+        4677,
+        596,
+        505
+      ],
+      "mean_pairwise_ari": 1.0,
+      "pairwise_ari": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    },
+    "behavioral_text_temporal_documented": {
+      "test_silhouette": 0.206452,
+      "test_cluster_counts": [
+        2741,
+        1821,
+        1168,
+        2218,
+        673
+      ],
+      "mean_pairwise_ari": 0.999585,
+      "pairwise_ari": [
+        0.998962,
+        1.0,
+        1.0,
+        1.0,
+        0.998962,
+        0.998962,
+        0.998962,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    },
+    "text_only_without_availability_indicator": {
+      "test_silhouette": 0.476372,
+      "test_cluster_counts": [
+        7207,
+        435,
+        529,
+        243,
+        207
+      ],
+      "mean_pairwise_ari": 0.760463,
+      "pairwise_ari": [
+        0.535955,
+        0.6244,
+        0.648222,
+        0.624388,
+        0.74793,
+        0.727988,
+        0.747418,
+        0.974186,
+        0.99784,
+        0.976309
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    },
+    "behavioral_text_temporal_fixed_weight_documented": {
+      "test_silhouette": 0.30557,
+      "test_cluster_counts": [
+        1628,
+        1490,
+        1760,
+        2337,
+        1406
+      ],
+      "mean_pairwise_ari": 0.998652,
+      "pairwise_ari": [
+        0.998796,
+        0.999074,
+        0.998434,
+        0.999103,
+        0.999723,
+        0.997232,
+        0.999693,
+        0.99751,
+        0.999416,
+        0.997538
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    }
+  },
+  "cluster_profiles": [
+    {
+      "variant": "behavioral_only",
+      "cluster": 0,
+      "customer_count": 2432,
+      "share_pct": 28.2102,
+      "text_available_count": 990,
+      "text_available_pct": 40.7072,
+      "temporal_available_count": 2432,
+      "mean_sequence_length": 1.0,
+      "retained_count": 23,
+      "retention_rate_pct": 0.945724,
+      "behavioral_means": {
+        "recency_days": 279.601106,
+        "frequency_orders": 1.0,
+        "monetary_value": 103.759194,
+        "total_items_purchased": 1.002467,
+        "unique_categories": 0.988076,
+        "unique_sellers": 0.988076,
+        "average_installments": 1.795299,
+        "review_count": 1.0
+      }
+    },
+    {
+      "variant": "behavioral_only",
+      "cluster": 1,
+      "customer_count": 2897,
+      "share_pct": 33.604,
+      "text_available_count": 1164,
+      "text_available_pct": 40.1795,
+      "temporal_available_count": 2897,
+      "mean_sequence_length": 1.0,
+      "retained_count": 34,
+      "retention_rate_pct": 1.173628,
+      "behavioral_means": {
+        "recency_days": 80.899316,
+        "frequency_orders": 1.0,
+        "monetary_value": 101.730618,
+        "total_items_purchased": 0.986538,
+        "unique_categories": 0.986538,
+        "unique_sellers": 0.986538,
+        "average_installments": 1.541624,
+        "review_count": 1.0
+      }
+    },
+    {
+      "variant": "behavioral_only",
+      "cluster": 2,
+      "customer_count": 1746,
+      "share_pct": 20.2529,
+      "text_available_count": 740,
+      "text_available_pct": 42.3826,
+      "temporal_available_count": 1746,
+      "mean_sequence_length": 1.0006,
+      "retained_count": 22,
+      "retention_rate_pct": 1.260023,
+      "behavioral_means": {
+        "recency_days": 166.298044,
+        "frequency_orders": 1.000573,
+        "monetary_value": 246.609009,
+        "total_items_purchased": 1.026919,
+        "unique_categories": 0.991982,
+        "unique_sellers": 0.991409,
+        "average_installments": 7.137743,
+        "review_count": 0.995418
+      }
+    },
+    {
+      "variant": "behavioral_only",
+      "cluster": 3,
+      "customer_count": 589,
+      "share_pct": 6.8322,
+      "text_available_count": 0,
+      "text_available_pct": 0.0,
+      "temporal_available_count": 589,
+      "mean_sequence_length": 1.0051,
+      "retained_count": 9,
+      "retention_rate_pct": 1.528014,
+      "behavioral_means": {
+        "recency_days": 24.716523,
+        "frequency_orders": 1.005093,
+        "monetary_value": 136.412241,
+        "total_items_purchased": 1.10017,
+        "unique_categories": 0.991511,
+        "unique_sellers": 0.994907,
+        "average_installments": 2.54584,
+        "review_count": 0.0
+      }
+    },
+    {
+      "variant": "behavioral_only",
+      "cluster": 4,
+      "customer_count": 957,
+      "share_pct": 11.1008,
+      "text_available_count": 494,
+      "text_available_pct": 51.6196,
+      "temporal_available_count": 957,
+      "mean_sequence_length": 1.2915,
+      "retained_count": 20,
+      "retention_rate_pct": 2.089864,
+      "behavioral_means": {
+        "recency_days": 154.418447,
+        "frequency_orders": 1.291536,
+        "monetary_value": 333.282717,
+        "total_items_purchased": 2.274817,
+        "unique_categories": 1.216301,
+        "unique_sellers": 1.315569,
+        "average_installments": 2.936468,
+        "review_count": 1.296761
+      }
+    },
+    {
+      "variant": "text_only_documented",
+      "cluster": 0,
+      "customer_count": 1419,
+      "share_pct": 16.4598,
+      "text_available_count": 1419,
+      "text_available_pct": 100.0,
+      "temporal_available_count": 1419,
+      "mean_sequence_length": 1.0416,
+      "retained_count": 24,
+      "retention_rate_pct": 1.691332,
+      "behavioral_means": {
+        "recency_days": 166.335433,
+        "frequency_orders": 1.041579,
+        "monetary_value": 178.213742,
+        "total_items_purchased": 1.234672,
+        "unique_categories": 1.019027,
+        "unique_sellers": 1.035236,
+        "average_installments": 3.305614,
+        "review_count": 1.048626
+      }
+    },
+    {
+      "variant": "text_only_documented",
+      "cluster": 1,
+      "customer_count": 5233,
+      "share_pct": 60.7006,
+      "text_available_count": 0,
+      "text_available_pct": 0.0,
+      "temporal_available_count": 5233,
+      "mean_sequence_length": 1.0269,
+      "retained_count": 58,
+      "retention_rate_pct": 1.108351,
+      "behavioral_means": {
+        "recency_days": 150.725784,
+        "frequency_orders": 1.026944,
+        "monetary_value": 153.265129,
+        "total_items_purchased": 1.124594,
+        "unique_categories": 1.013377,
+        "unique_sellers": 1.021403,
+        "average_installments": 2.882021,
+        "review_count": 0.909994
+      }
+    },
+    {
+      "variant": "text_only_documented",
+      "cluster": 2,
+      "customer_count": 479,
+      "share_pct": 5.5562,
+      "text_available_count": 479,
+      "text_available_pct": 100.0,
+      "temporal_available_count": 479,
+      "mean_sequence_length": 1.0313,
+      "retained_count": 6,
+      "retention_rate_pct": 1.25261,
+      "behavioral_means": {
+        "recency_days": 171.031124,
+        "frequency_orders": 1.031315,
+        "monetary_value": 172.971879,
+        "total_items_purchased": 1.121086,
+        "unique_categories": 1.012526,
+        "unique_sellers": 1.025052,
+        "average_installments": 2.772965,
+        "review_count": 1.037578
+      }
+    },
+    {
+      "variant": "text_only_documented",
+      "cluster": 3,
+      "customer_count": 942,
+      "share_pct": 10.9268,
+      "text_available_count": 942,
+      "text_available_pct": 100.0,
+      "temporal_available_count": 942,
+      "mean_sequence_length": 1.0425,
+      "retained_count": 14,
+      "retention_rate_pct": 1.4862,
+      "behavioral_means": {
+        "recency_days": 170.551257,
+        "frequency_orders": 1.042463,
+        "monetary_value": 162.576338,
+        "total_items_purchased": 1.171975,
+        "unique_categories": 1.0,
+        "unique_sellers": 1.018047,
+        "average_installments": 3.034324,
+        "review_count": 1.044586
+      }
+    },
+    {
+      "variant": "text_only_documented",
+      "cluster": 4,
+      "customer_count": 548,
+      "share_pct": 6.3566,
+      "text_available_count": 548,
+      "text_available_pct": 100.0,
+      "temporal_available_count": 548,
+      "mean_sequence_length": 1.0511,
+      "retained_count": 6,
+      "retention_rate_pct": 1.094891,
+      "behavioral_means": {
+        "recency_days": 181.910373,
+        "frequency_orders": 1.051095,
+        "monetary_value": 156.955292,
+        "total_items_purchased": 1.160584,
+        "unique_categories": 1.031022,
+        "unique_sellers": 1.04562,
+        "average_installments": 3.002889,
+        "review_count": 1.05292
+      }
+    },
+    {
+      "variant": "temporal_only",
+      "cluster": 0,
+      "customer_count": 655,
+      "share_pct": 7.5977,
+      "text_available_count": 245,
+      "text_available_pct": 37.4046,
+      "temporal_available_count": 655,
+      "mean_sequence_length": 1.0031,
+      "retained_count": 8,
+      "retention_rate_pct": 1.221374,
+      "behavioral_means": {
+        "recency_days": 151.754907,
+        "frequency_orders": 1.003053,
+        "monetary_value": 152.732702,
+        "total_items_purchased": 1.0,
+        "unique_categories": 0.998473,
+        "unique_sellers": 0.998473,
+        "average_installments": 3.301781,
+        "review_count": 0.912977
+      }
+    },
+    {
+      "variant": "temporal_only",
+      "cluster": 1,
+      "customer_count": 2188,
+      "share_pct": 25.3799,
+      "text_available_count": 906,
+      "text_available_pct": 41.4077,
+      "temporal_available_count": 2188,
+      "mean_sequence_length": 1.1211,
+      "retained_count": 27,
+      "retention_rate_pct": 1.234004,
+      "behavioral_means": {
+        "recency_days": 157.327729,
+        "frequency_orders": 1.121115,
+        "monetary_value": 360.239534,
+        "total_items_purchased": 1.213437,
+        "unique_categories": 1.063985,
+        "unique_sellers": 1.112431,
+        "average_installments": 4.347936,
+        "review_count": 1.059415
+      }
+    },
+    {
+      "variant": "temporal_only",
+      "cluster": 2,
+      "customer_count": 4677,
+      "share_pct": 54.2512,
+      "text_available_count": 1742,
+      "text_available_pct": 37.2461,
+      "temporal_available_count": 4677,
+      "mean_sequence_length": 1.0002,
+      "retained_count": 54,
+      "retention_rate_pct": 1.154586,
+      "behavioral_means": {
+        "recency_days": 159.103755,
+        "frequency_orders": 1.000214,
+        "monetary_value": 67.705033,
+        "total_items_purchased": 0.999786,
+        "unique_categories": 0.996365,
+        "unique_sellers": 0.993158,
+        "average_installments": 2.242267,
+        "review_count": 0.93158
+      }
+    },
+    {
+      "variant": "temporal_only",
+      "cluster": 3,
+      "customer_count": 596,
+      "share_pct": 6.9134,
+      "text_available_count": 285,
+      "text_available_pct": 47.8188,
+      "temporal_available_count": 596,
+      "mean_sequence_length": 1.0252,
+      "retained_count": 10,
+      "retention_rate_pct": 1.677852,
+      "behavioral_means": {
+        "recency_days": 160.723556,
+        "frequency_orders": 1.025168,
+        "monetary_value": 181.038238,
+        "total_items_purchased": 2.401007,
+        "unique_categories": 1.010067,
+        "unique_sellers": 1.018456,
+        "average_installments": 3.176594,
+        "review_count": 0.941275
+      }
+    },
+    {
+      "variant": "temporal_only",
+      "cluster": 4,
+      "customer_count": 505,
+      "share_pct": 5.8578,
+      "text_available_count": 210,
+      "text_available_pct": 41.5842,
+      "temporal_available_count": 505,
+      "mean_sequence_length": 1.0,
+      "retained_count": 9,
+      "retention_rate_pct": 1.782178,
+      "behavioral_means": {
+        "recency_days": 165.338705,
+        "frequency_orders": 1.0,
+        "monetary_value": 126.998832,
+        "total_items_purchased": 0.984158,
+        "unique_categories": 0.984158,
+        "unique_sellers": 0.984158,
+        "average_installments": 3.065677,
+        "review_count": 0.938614
+      }
+    },
+    {
+      "variant": "behavioral_text_temporal_documented",
+      "cluster": 0,
+      "customer_count": 2741,
+      "share_pct": 31.7945,
+      "text_available_count": 929,
+      "text_available_pct": 33.8927,
+      "temporal_available_count": 2741,
+      "mean_sequence_length": 1.0,
+      "retained_count": 40,
+      "retention_rate_pct": 1.459321,
+      "behavioral_means": {
+        "recency_days": 74.705565,
+        "frequency_orders": 1.0,
+        "monetary_value": 68.512149,
+        "total_items_purchased": 0.984677,
+        "unique_categories": 0.984677,
+        "unique_sellers": 0.984677,
+        "average_installments": 2.115621,
+        "review_count": 0.879971
+      }
+    },
+    {
+      "variant": "behavioral_text_temporal_documented",
+      "cluster": 1,
+      "customer_count": 1821,
+      "share_pct": 21.1228,
+      "text_available_count": 813,
+      "text_available_pct": 44.6458,
+      "temporal_available_count": 1821,
+      "mean_sequence_length": 1.1461,
+      "retained_count": 23,
+      "retention_rate_pct": 1.263042,
+      "behavioral_means": {
+        "recency_days": 199.34383,
+        "frequency_orders": 1.146074,
+        "monetary_value": 363.80659,
+        "total_items_purchased": 1.239978,
+        "unique_categories": 1.075783,
+        "unique_sellers": 1.134541,
+        "average_installments": 5.491918,
+        "review_count": 1.118067
+      }
+    },
+    {
+      "variant": "behavioral_text_temporal_documented",
+      "cluster": 2,
+      "customer_count": 1168,
+      "share_pct": 13.5483,
+      "text_available_count": 389,
+      "text_available_pct": 33.3048,
+      "temporal_available_count": 1168,
+      "mean_sequence_length": 1.0,
+      "retained_count": 12,
+      "retention_rate_pct": 1.027397,
+      "behavioral_means": {
+        "recency_days": 79.861039,
+        "frequency_orders": 1.0,
+        "monetary_value": 205.334974,
+        "total_items_purchased": 1.001712,
+        "unique_categories": 0.999144,
+        "unique_sellers": 0.999144,
+        "average_installments": 1.914954,
+        "review_count": 0.869007
+      }
+    },
+    {
+      "variant": "behavioral_text_temporal_documented",
+      "cluster": 3,
+      "customer_count": 2218,
+      "share_pct": 25.7279,
+      "text_available_count": 926,
+      "text_available_pct": 41.7493,
+      "temporal_available_count": 2218,
+      "mean_sequence_length": 1.0,
+      "retained_count": 23,
+      "retention_rate_pct": 1.03697,
+      "behavioral_means": {
+        "recency_days": 269.344075,
+        "frequency_orders": 1.0,
+        "monetary_value": 71.069211,
+        "total_items_purchased": 0.980162,
+        "unique_categories": 0.980162,
+        "unique_sellers": 0.980162,
+        "average_installments": 2.414262,
+        "review_count": 0.996844
+      }
+    },
+    {
+      "variant": "behavioral_text_temporal_documented",
+      "cluster": 4,
+      "customer_count": 673,
+      "share_pct": 7.8065,
+      "text_available_count": 331,
+      "text_available_pct": 49.1828,
+      "temporal_available_count": 673,
+      "mean_sequence_length": 1.0253,
+      "retained_count": 10,
+      "retention_rate_pct": 1.485884,
+      "behavioral_means": {
+        "recency_days": 161.355365,
+        "frequency_orders": 1.02526,
+        "monetary_value": 191.957355,
+        "total_items_purchased": 2.396731,
+        "unique_categories": 1.102526,
+        "unique_sellers": 1.086181,
+        "average_installments": 3.288633,
+        "review_count": 0.942051
+      }
+    }
+  ],
+  "strongest_fair_comparison": {
+    "behavioral_baseline": {
+      "test_silhouette": 0.417657,
+      "test_cluster_counts": [
+        2432,
+        2897,
+        1746,
+        589,
+        957
+      ],
+      "mean_pairwise_ari": 0.999362,
+      "pairwise_ari": [
+        0.999401,
+        0.999701,
+        0.998826,
+        0.999757,
+        0.999701,
+        0.999424,
+        0.999158,
+        0.999125,
+        0.999458,
+        0.999069
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    },
+    "full_static_fusion": {
+      "test_silhouette": 0.206452,
+      "test_cluster_counts": [
+        2741,
+        1821,
+        1168,
+        2218,
+        673
+      ],
+      "mean_pairwise_ari": 0.999585,
+      "pairwise_ari": [
+        0.998962,
+        1.0,
+        1.0,
+        1.0,
+        0.998962,
+        0.998962,
+        0.998962,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "fit_protocol": "KMeans fit on train customers; test labels predicted without refit"
+    },
+    "comparison_population_identical": true,
+    "selection_status": "descriptive frozen-protocol comparison; no Phase 10 model selected"
+  }
+}

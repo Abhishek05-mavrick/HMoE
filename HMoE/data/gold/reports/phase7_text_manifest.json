@@ -1,0 +1,71 @@
+{
+  "phase": "Phase 7: Text representation",
+  "input_artifacts": [
+    "data/gold/temporal_customer_cohort.parquet",
+    "data/gold/gold_customer_reviews.parquet"
+  ],
+  "output_artifacts": [
+    "data\\processed\\customer_text_view.parquet",
+    "data\\embeddings\\phase7_review_embeddings.parquet"
+  ],
+  "observation_cutoff": "2018-03-01T00:00:00",
+  "split_counts": [
+    {
+      "split": "test",
+      "len": 8621
+    },
+    {
+      "split": "train",
+      "len": 40208
+    },
+    {
+      "split": "val",
+      "len": 8681
+    }
+  ],
+  "preprocessing_fit_scope": "frozen pretrained model; no fitting on customer outcomes",
+  "reproduction_command": "python -m src.phase7_text",
+  "metadata": {
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "model_version": "all-MiniLM-L6-v2",
+    "model_provenance": {
+      "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "cache_root": "C:\\Users\\ASUS\\.cache\\huggingface\\hub",
+      "snapshot_path": "C:\\Users\\ASUS\\.cache\\huggingface\\hub\\models--sentence-transformers--all-MiniLM-L6-v2\\snapshots\\1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "cache_present": true
+    },
+    "sentence_transformers_version": "6.1.0",
+    "embedding_dimension": 384,
+    "pooling": "mean over eligible non-empty review embeddings per customer",
+    "max_sequence_length": 256,
+    "batch_size": 64,
+    "normalize_embeddings": false,
+    "cutoff": "2018-03-01T00:00:00",
+    "review_stats": {
+      "eligible_reviews": 54778,
+      "eligible_nonempty_reviews": 22973,
+      "duplicate_review_ids_removed": 562,
+      "empty_text_reviews": 31805
+    },
+    "customer_count": 57510,
+    "customers_with_text": 22535,
+    "customers_without_text": 34975,
+    "embedding_audit": {
+      "review_embedding_count": 22973,
+      "review_nonfinite_values": 0,
+      "customer_embedding_count": 22535,
+      "customer_nonfinite_values": 0,
+      "review_cutoff_violations": 0,
+      "customer_rows": 57510,
+      "customer_unique_ids": 57510,
+      "aggregation_customers_checked": 22535,
+      "aggregation_mismatches": 0,
+      "all_checks_passed": true
+    }
+  },
+  "limitations": [
+    "Review text is available only for customers with eligible non-empty pre-cutoff review text.",
+    "Embeddings are descriptive and are not selected using future retention labels."
+  ]
+}

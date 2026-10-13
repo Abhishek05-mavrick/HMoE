@@ -1,0 +1,185 @@
+{
+  "phase": "Phase 8: Temporal representation",
+  "input_artifacts": [
+    "data/gold/gold_customer_events.parquet",
+    "data/gold/temporal_customer_cohort.parquet"
+  ],
+  "output_artifacts": [
+    "data\\embeddings\\phase8_temporal_embeddings.parquet"
+  ],
+  "observation_cutoff": "2018-03-01T00:00:00",
+  "features": [
+    "days_since_previous_order",
+    "order_value",
+    "payment_value",
+    "item_count",
+    "category_count",
+    "seller_count"
+  ],
+  "excluded_later_known_fields": [
+    "delivery_duration_days",
+    "delivery_delay_days",
+    "review_score",
+    "order_status"
+  ],
+  "sequence_policy": {
+    "max_length": 20,
+    "truncation": "retain most recent events",
+    "padding": "post-padding with zeros",
+    "mask": "one for observed events, zero for padding",
+    "ordering": "event_timestamp ascending, order_id ascending tie-break",
+    "empty_history": "zero sequence with availability false",
+    "missing_event_values": "first-event inter-order interval and other non-finite inputs set to zero"
+  },
+  "encoder": {
+    "architecture": "GRU encoder with linear per-timestep reconstruction head",
+    "objective": "self-supervised masked reconstruction of event features",
+    "embedding_dimension": 32,
+    "epochs": 5,
+    "seed": 42,
+    "preprocessing_fit_split": "train",
+    "training_customer_count": 40208,
+    "validation_customer_count": 8681,
+    "test_customer_count": 8621,
+    "fit_customer_selection": "split == 'train'; validation and test customers excluded",
+    "scaler_mean": [
+      1.56593656539917,
+      157.1902618408203,
+      159.14144897460938,
+      1.1313761472702026,
+      0.9967727661132812,
+      1.0005780458450317
+    ],
+    "scaler_scale": [
+      16.143775939941406,
+      218.85391235351562,
+      220.0067901611328,
+      0.5547466278076172,
+      0.13235047459602356,
+      0.1491730511188507
+    ]
+  },
+  "sequence_stats": {
+    "event_rows_before_cutoff": 59427,
+    "customers_with_history": 57510,
+    "customers_without_history": 0,
+    "truncated_customers": 0,
+    "max_observed_sequence_length": 10,
+    "cutoff_violations": 0
+  },
+  "audit": {
+    "embedding_count": 57510,
+    "nonfinite_values": 0,
+    "customer_rows": 57510,
+    "unique_customers": 57510,
+    "all_checks_passed": true
+  },
+  "clustering_comparison": {
+    "behavioral_only": {
+      "k": 5,
+      "train_customer_count": 40208,
+      "test_customer_count": 8621,
+      "test_silhouette": 0.399719,
+      "stability_seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "test_pairwise_ari_vs_seed_42": [
+        0.992922,
+        0.733614,
+        0.992922,
+        0.733614
+      ],
+      "test_stability_mean_ari": 0.841149,
+      "test_pairwise_ari_all_seed_pairs": [
+        0.992922,
+        0.733614,
+        0.992922,
+        0.733614,
+        0.739606,
+        1.0,
+        0.739606,
+        0.739606,
+        1.0,
+        0.739606
+      ]
+    },
+    "temporal_only": {
+      "k": 5,
+      "train_customer_count": 40208,
+      "test_customer_count": 8621,
+      "test_silhouette": 0.029728,
+      "stability_seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "test_pairwise_ari_vs_seed_42": [
+        0.156725,
+        0.149164,
+        0.576515,
+        0.551891
+      ],
+      "test_stability_mean_ari": 0.320647,
+      "test_pairwise_ari_all_seed_pairs": [
+        0.156725,
+        0.149164,
+        0.576515,
+        0.551891,
+        0.950789,
+        0.101113,
+        0.219699,
+        0.092311,
+        0.209409,
+        0.198851
+      ]
+    },
+    "behavioral_plus_temporal": {
+      "k": 5,
+      "train_customer_count": 40208,
+      "test_customer_count": 8621,
+      "test_silhouette": 0.399719,
+      "stability_seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "test_pairwise_ari_vs_seed_42": [
+        0.992922,
+        0.733614,
+        0.992922,
+        0.733614
+      ],
+      "test_stability_mean_ari": 0.841149,
+      "test_pairwise_ari_all_seed_pairs": [
+        0.992922,
+        0.733614,
+        0.992922,
+        0.733614,
+        0.739606,
+        1.0,
+        0.739606,
+        0.739606,
+        1.0,
+        0.739606
+      ]
+    },
+    "comparison_audit": {
+      "same_test_customer_count": true,
+      "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+      "same_test_customers": true,
+      "preprocessing_fit": "behavioral StandardScaler fit on train customers; temporal scaler fit on train events/customers",
+      "clustering_implementation": "sklearn KMeans(n_clusters=5, n_init=10), fit on train and predict on test",
+      "k_fixed": 5
+    },
+    "silhouette_difference_behavioral_plus_temporal_minus_behavioral": 0.0
+  },
+  "reproduction_command": "python -m src.phase8_temporal"
+}

@@ -1,0 +1,3593 @@
+{
+  "report_version": "2.0-corrected",
+  "generated_at_utc": "2026-10-13T09:48:22.511517+00:00",
+  "source_artifacts": {
+    "cohort": "data/gold/temporal_customer_cohort.parquet",
+    "assignments": "data/gold/baselines/phase6_baseline_test_assignments.parquet",
+    "original_manifest": "data/gold/baselines/phase6_baselines_manifest.json"
+  },
+  "evaluation_scope": {
+    "target_definition": "future_is_retained == 1 iff future_orders_count > 0",
+    "blind_test_customers": 8621,
+    "blind_test_retained_customers": 108,
+    "blind_test_retention_rate": 0.01252755,
+    "blind_test_retention_rate_pct": 1.252755,
+    "cohort_customers": 57510,
+    "cohort_retained_customers": 684,
+    "cohort_retention_rate": 0.01189358,
+    "cohort_retention_rate_pct": 1.189358,
+    "retention_baseline_used_for_lifts": "blind_test"
+  },
+  "validation": {
+    "target_count_matches_manifest": true,
+    "retained_count_matches_manifest": true,
+    "split_counts": {
+      "train": 40208,
+      "val": 8681,
+      "test": 8621
+    },
+    "assignment_count_matches_test": true
+  },
+  "model_selection_audit": {
+    "status": "confirmed_no_blind_test_retention_outcomes_used",
+    "evidence": [
+      "K selection is performed with X_train and X_val only.",
+      "GMM BIC/AIC selection is performed with X_train and X_val only.",
+      "Future retention columns are not feature columns and are evaluated only after test assignments are produced."
+    ],
+    "caveat": "HDBSCAN is transductive: sklearn HDBSCAN is fit_predict on X_test because it has no out-of-sample predict method."
+  },
+  "original_phase6_results": {
+    "manifest_version": "1.0",
+    "phase": "Phase 6: Classical Customer-Segmentation Baselines",
+    "timestamp": "2026-10-13T14:23:02.291004",
+    "k_selection_methodology": {
+      "RFM": {
+        "candidate_results": [
+          {
+            "k": 3,
+            "inertia": 57252.219591549496,
+            "silhouette": 0.5057,
+            "davies_bouldin": 0.7013,
+            "calinski_harabasz": 4987.7682
+          },
+          {
+            "k": 4,
+            "inertia": 38410.344729782766,
+            "silhouette": 0.5314,
+            "davies_bouldin": 0.6634,
+            "calinski_harabasz": 6047.9398
+          },
+          {
+            "k": 5,
+            "inertia": 32831.17727221173,
+            "silhouette": 0.5412,
+            "davies_bouldin": 0.6507,
+            "calinski_harabasz": 5799.6246
+          },
+          {
+            "k": 6,
+            "inertia": 27767.01050207455,
+            "silhouette": 0.4398,
+            "davies_bouldin": 0.7246,
+            "calinski_harabasz": 5664.2985
+          },
+          {
+            "k": 7,
+            "inertia": 23961.24408599676,
+            "silhouette": 0.4412,
+            "davies_bouldin": 0.7664,
+            "calinski_harabasz": 6424.6113
+          }
+        ],
+        "selected_k": 5,
+        "selection_criteria": "Highest Validation Silhouette Score with Elbow/DBI cross-validation"
+      },
+      "RFM_Selected_NonRedundant": {
+        "candidate_results": [
+          {
+            "k": 3,
+            "inertia": 231941.9457155615,
+            "silhouette": 0.3061,
+            "davies_bouldin": 1.6524,
+            "calinski_harabasz": 1655.2526
+          },
+          {
+            "k": 4,
+            "inertia": 205786.08957638068,
+            "silhouette": 0.2187,
+            "davies_bouldin": 1.5482,
+            "calinski_harabasz": 1684.3744
+          },
+          {
+            "k": 5,
+            "inertia": 178063.0061948782,
+            "silhouette": 0.3176,
+            "davies_bouldin": 1.279,
+            "calinski_harabasz": 1769.2495
+          },
+          {
+            "k": 6,
+            "inertia": 158941.93487401874,
+            "silhouette": 0.2585,
+            "davies_bouldin": 1.2103,
+            "calinski_harabasz": 1773.8568
+          },
+          {
+            "k": 7,
+            "inertia": 145948.54204292645,
+            "silhouette": 0.2676,
+            "davies_bouldin": 1.1359,
+            "calinski_harabasz": 1747.5964
+          }
+        ],
+        "selected_k": 5,
+        "selection_criteria": "Highest Validation Silhouette Score with Elbow/DBI cross-validation"
+      },
+      "GMM": {
+        "candidate_results": [
+          {
+            "k": 3,
+            "bic": -143693.27,
+            "aic": -144046.71,
+            "davies_bouldin": 1.987
+          },
+          {
+            "k": 4,
+            "bic": -158431.33,
+            "aic": -158904.95,
+            "davies_bouldin": 1.7456
+          },
+          {
+            "k": 5,
+            "bic": -207447.64,
+            "aic": -208041.43,
+            "davies_bouldin": 1.879
+          },
+          {
+            "k": 6,
+            "bic": -226023.81,
+            "aic": -226737.77,
+            "davies_bouldin": 1.9424
+          },
+          {
+            "k": 7,
+            "bic": -236797.78,
+            "aic": -237631.91,
+            "davies_bouldin": 1.9584
+          }
+        ],
+        "selected_k": 7,
+        "selection_criteria": "Minimum Bayesian Information Criterion (BIC)"
+      }
+    },
+    "baselines_evaluation": {
+      "Baseline_1_KMeans_RFM": {
+        "model_type": "KMeans",
+        "feature_set": "RFM",
+        "num_features": 3,
+        "num_clusters": 5,
+        "internal_metrics": {
+          "silhouette_score": 0.5314,
+          "davies_bouldin_index": 0.6182,
+          "calinski_harabasz_score": 7213.43
+        },
+        "stability_metrics": {
+          "mean_pairwise_ari": 0.9937,
+          "mean_pairwise_nmi": 0.9814
+        },
+        "downstream_utility": {
+          "cohort_baseline_retention_rate": 0.0125,
+          "cluster_retention_anova_f_stat": 7.2742,
+          "cluster_retention_anova_p_val": 7.632208248049971e-06,
+          "cluster_spend_anova_f_stat": 12.8513,
+          "cluster_spend_anova_p_val": 1.9712288580711736e-10,
+          "max_retention_cluster": 0,
+          "max_retention_rate": 0.0471,
+          "min_retention_rate": 0.0,
+          "retention_lift": 3.76,
+          "cluster_breakdown": [
+            {
+              "cluster": 0,
+              "customer_count": 255,
+              "retention_rate": 0.047058823529411764,
+              "mean_future_spend": 12.899372549019606,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.050980392156862744
+            },
+            {
+              "cluster": 1,
+              "customer_count": 3128,
+              "retention_rate": 0.010230179028132993,
+              "mean_future_spend": 1.7058727621483376,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.010549872122762148
+            },
+            {
+              "cluster": 2,
+              "customer_count": 332,
+              "retention_rate": 0.0030120481927710845,
+              "mean_future_spend": 0.2655120481927711,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.0030120481927710845
+            },
+            {
+              "cluster": 3,
+              "customer_count": 4859,
+              "retention_rate": 0.01296563078822803,
+              "mean_future_spend": 1.610479522535501,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.013994649104754064
+            },
+            {
+              "cluster": 4,
+              "customer_count": 47,
+              "retention_rate": 0.0,
+              "mean_future_spend": 0.0,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.0
+            }
+          ]
+        },
+        "cluster_profiles": [
+          {
+            "cluster": 0,
+            "customer_count": 255,
+            "customer_pct": 2.9578935158334296,
+            "median_recency_days": 130.3369097222222,
+            "mean_frequency_orders": 2.0980392156862746,
+            "median_spend": 219.67000000000002,
+            "mean_items": 2.3372549019607844,
+            "median_installments": 2.5,
+            "median_delivery_days": 11.239716435185185,
+            "mean_review_score": 4.2202231520223155,
+            "future_retention_rate": 0.047058823529411764
+          },
+          {
+            "cluster": 1,
+            "customer_count": 3128,
+            "customer_pct": 36.28349379422341,
+            "median_recency_days": 273.2708622685185,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 95.505,
+            "mean_items": 1.1010230179028133,
+            "median_installments": 2.0,
+            "median_delivery_days": 10.376435185185185,
+            "mean_review_score": 4.157801418439717,
+            "future_retention_rate": 0.010230179028132993
+          },
+          {
+            "cluster": 2,
+            "customer_count": 332,
+            "customer_pct": 3.851061361790976,
+            "median_recency_days": 132.67262152777778,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 652.69,
+            "mean_items": 1.3614457831325302,
+            "median_installments": 5.0,
+            "median_delivery_days": 12.284039351851852,
+            "mean_review_score": 4.0,
+            "future_retention_rate": 0.0030120481927710845
+          },
+          {
+            "cluster": 3,
+            "customer_count": 4859,
+            "customer_pct": 56.362370954645634,
+            "median_recency_days": 81.18908564814815,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 98.31,
+            "mean_items": 1.0987857583864993,
+            "median_installments": 1.0,
+            "median_delivery_days": 11.319542824074073,
+            "mean_review_score": 4.067061831706183,
+            "future_retention_rate": 0.01296563078822803
+          },
+          {
+            "cluster": 4,
+            "customer_count": 47,
+            "customer_pct": 0.5451803735065538,
+            "median_recency_days": 175.22671296296295,
+            "mean_frequency_orders": 1.0638297872340425,
+            "median_spend": 1944.86,
+            "mean_items": 1.7659574468085106,
+            "median_installments": 6.0,
+            "median_delivery_days": 12.774976851851852,
+            "mean_review_score": 3.688888888888889,
+            "future_retention_rate": 0.0
+          }
+        ]
+      },
+      "Baseline_2_KMeans_RFM_Behavioral": {
+        "model_type": "KMeans",
+        "feature_set": "RFM_Behavioral",
+        "num_features": 7,
+        "num_clusters": 4,
+        "internal_metrics": {
+          "silhouette_score": 0.3379,
+          "davies_bouldin_index": 1.0759,
+          "calinski_harabasz_score": 2691.23
+        },
+        "stability_metrics": {
+          "mean_pairwise_ari": 0.9998,
+          "mean_pairwise_nmi": 0.9994
+        },
+        "downstream_utility": {
+          "cohort_baseline_retention_rate": 0.0125,
+          "cluster_retention_anova_f_stat": 7.2248,
+          "cluster_retention_anova_p_val": 7.719025041753878e-05,
+          "cluster_spend_anova_f_stat": 11.4809,
+          "cluster_spend_anova_p_val": 1.650072352858084e-07,
+          "max_retention_cluster": 3,
+          "max_retention_rate": 0.0433,
+          "min_retention_rate": 0.0096,
+          "retention_lift": 3.46,
+          "cluster_breakdown": [
+            {
+              "cluster": 0,
+              "customer_count": 2714,
+              "retention_rate": 0.009579955784819455,
+              "mean_future_spend": 1.7846462785556374,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.009579955784819455
+            },
+            {
+              "cluster": 1,
+              "customer_count": 1259,
+              "retention_rate": 0.011119936457505957,
+              "mean_future_spend": 1.24,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.011914217633042097
+            },
+            {
+              "cluster": 2,
+              "customer_count": 4394,
+              "retention_rate": 0.01297223486572599,
+              "mean_future_spend": 1.6714269458352298,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.014110150204824761
+            },
+            {
+              "cluster": 3,
+              "customer_count": 254,
+              "retention_rate": 0.04330708661417323,
+              "mean_future_spend": 10.983622047244095,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.047244094488188976
+            }
+          ]
+        },
+        "cluster_profiles": [
+          {
+            "cluster": 0,
+            "customer_count": 2714,
+            "customer_pct": 31.48126667439972,
+            "median_recency_days": 275.3276909722222,
+            "mean_frequency_orders": 1.005526897568165,
+            "median_spend": 84.62,
+            "mean_items": 1.0792188651436994,
+            "median_installments": 1.0,
+            "median_delivery_days": 10.451342592592592,
+            "mean_review_score": 4.166419019316494,
+            "future_retention_rate": 0.009579955784819455
+          },
+          {
+            "cluster": 1,
+            "customer_count": 1259,
+            "customer_pct": 14.60387426052662,
+            "median_recency_days": 154.46096064814813,
+            "mean_frequency_orders": 1.0127084988085782,
+            "median_spend": 232.70999999999998,
+            "mean_items": 1.2255758538522636,
+            "median_installments": 8.0,
+            "median_delivery_days": 11.707534722222222,
+            "mean_review_score": 4.020833333333334,
+            "future_retention_rate": 0.011119936457505957
+          },
+          {
+            "cluster": 2,
+            "customer_count": 4394,
+            "customer_pct": 50.96856513165526,
+            "median_recency_days": 80.04034143518518,
+            "mean_frequency_orders": 1.0059171597633136,
+            "median_spend": 91.055,
+            "mean_items": 1.0912608101957215,
+            "median_installments": 1.0,
+            "median_delivery_days": 11.227372685185184,
+            "mean_review_score": 4.0956980937661,
+            "future_retention_rate": 0.01297223486572599
+          },
+          {
+            "cluster": 3,
+            "customer_count": 254,
+            "customer_pct": 2.946293933418397,
+            "median_recency_days": 122.31129629629629,
+            "mean_frequency_orders": 1.889763779527559,
+            "median_spend": 229.925,
+            "mean_items": 2.547244094488189,
+            "median_installments": 3.0,
+            "median_delivery_days": 10.485260416666666,
+            "mean_review_score": 3.885277777777778,
+            "future_retention_rate": 0.04330708661417323
+          }
+        ]
+      },
+      "Baseline_3_KMeans_RFM_Selected_NonRedundant": {
+        "model_type": "KMeans",
+        "feature_set": "RFM_Selected_NonRedundant",
+        "num_features": 8,
+        "num_clusters": 5,
+        "internal_metrics": {
+          "silhouette_score": 0.3253,
+          "davies_bouldin_index": 1.2518,
+          "calinski_harabasz_score": 1865.92
+        },
+        "stability_metrics": {
+          "mean_pairwise_ari": 0.6034,
+          "mean_pairwise_nmi": 0.7136
+        },
+        "downstream_utility": {
+          "cohort_baseline_retention_rate": 0.0125,
+          "cluster_retention_anova_f_stat": 6.3845,
+          "cluster_retention_anova_p_val": 3.984566889452564e-05,
+          "cluster_spend_anova_f_stat": 12.9022,
+          "cluster_spend_anova_p_val": 1.7884251367181513e-10,
+          "max_retention_cluster": 2,
+          "max_retention_rate": 0.0465,
+          "min_retention_rate": 0.009,
+          "retention_lift": 3.71,
+          "cluster_breakdown": [
+            {
+              "cluster": 0,
+              "customer_count": 1189,
+              "retention_rate": 0.011774600504625737,
+              "mean_future_spend": 1.517375946173255,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.012615643397813289
+            },
+            {
+              "cluster": 1,
+              "customer_count": 5275,
+              "retention_rate": 0.011753554502369668,
+              "mean_future_spend": 1.6403469194312796,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.012511848341232227
+            },
+            {
+              "cluster": 2,
+              "customer_count": 258,
+              "retention_rate": 0.046511627906976744,
+              "mean_future_spend": 12.74937984496124,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.050387596899224806
+            },
+            {
+              "cluster": 3,
+              "customer_count": 1105,
+              "retention_rate": 0.00904977375565611,
+              "mean_future_spend": 0.7659366515837104,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.00904977375565611
+            },
+            {
+              "cluster": 4,
+              "customer_count": 794,
+              "retention_rate": 0.012594458438287154,
+              "mean_future_spend": 2.4509949622166247,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.013853904282115869
+            }
+          ]
+        },
+        "cluster_profiles": [
+          {
+            "cluster": 0,
+            "customer_count": 1189,
+            "customer_pct": 13.791903491474306,
+            "median_recency_days": 173.0192361111111,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 212.32000000000002,
+            "mean_items": 1.015138772077376,
+            "median_installments": 8.0,
+            "median_delivery_days": 11.574166666666667,
+            "mean_review_score": 4.388888888888889,
+            "future_retention_rate": 0.011774600504625737
+          },
+          {
+            "cluster": 1,
+            "customer_count": 5275,
+            "customer_pct": 61.18779723929938,
+            "median_recency_days": 131.15984953703702,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 81.63000000000001,
+            "mean_items": 1.0036018957345971,
+            "median_installments": 1.0,
+            "median_delivery_days": 10.114583333333332,
+            "mean_review_score": 4.6675338189386055,
+            "future_retention_rate": 0.011753554502369668
+          },
+          {
+            "cluster": 2,
+            "customer_count": 258,
+            "customer_pct": 2.992692263078529,
+            "median_recency_days": 128.38619212962962,
+            "mean_frequency_orders": 2.0968992248062017,
+            "median_spend": 220.76999999999998,
+            "mean_items": 2.395348837209302,
+            "median_installments": 2.583333333333333,
+            "median_delivery_days": 11.244522569444445,
+            "mean_review_score": 4.221625344352617,
+            "future_retention_rate": 0.046511627906976744
+          },
+          {
+            "cluster": 3,
+            "customer_count": 1105,
+            "customer_pct": 12.81753856861153,
+            "median_recency_days": 132.20453703703703,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 102.03,
+            "mean_items": 1.0171945701357465,
+            "median_installments": 2.0,
+            "median_delivery_days": 19.177413194444444,
+            "mean_review_score": 1.808529945553539,
+            "future_retention_rate": 0.00904977375565611
+          },
+          {
+            "cluster": 4,
+            "customer_count": 794,
+            "customer_pct": 9.210068437536249,
+            "median_recency_days": 134.56195601851852,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 150.83,
+            "mean_items": 2.104534005037783,
+            "median_installments": 2.0,
+            "median_delivery_days": 10.144265046296296,
+            "mean_review_score": 3.367667121418827,
+            "future_retention_rate": 0.012594458438287154
+          }
+        ]
+      },
+      "Baseline_4_KMeans_RFM_All_Engineered": {
+        "model_type": "KMeans",
+        "feature_set": "RFM_All_Engineered",
+        "num_features": 16,
+        "num_clusters": 4,
+        "internal_metrics": {
+          "silhouette_score": 0.5096,
+          "davies_bouldin_index": 1.1484,
+          "calinski_harabasz_score": 1646.96
+        },
+        "stability_metrics": {
+          "mean_pairwise_ari": 0.9996,
+          "mean_pairwise_nmi": 0.9988
+        },
+        "downstream_utility": {
+          "cohort_baseline_retention_rate": 0.0125,
+          "cluster_retention_anova_f_stat": 7.6744,
+          "cluster_retention_anova_p_val": 4.050208643536364e-05,
+          "cluster_spend_anova_f_stat": 13.0318,
+          "cluster_spend_anova_p_val": 1.72797354544114e-08,
+          "max_retention_cluster": 3,
+          "max_retention_rate": 0.0449,
+          "min_retention_rate": 0.0037,
+          "retention_lift": 3.58,
+          "cluster_breakdown": [
+            {
+              "cluster": 0,
+              "customer_count": 7298,
+              "retention_rate": 0.011647026582625376,
+              "mean_future_spend": 1.536749794464237,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.012332145793368046
+            },
+            {
+              "cluster": 1,
+              "customer_count": 269,
+              "retention_rate": 0.0037174721189591076,
+              "mean_future_spend": 0.32769516728624537,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.0037174721189591076
+            },
+            {
+              "cluster": 2,
+              "customer_count": 809,
+              "retention_rate": 0.013597033374536464,
+              "mean_future_spend": 3.0229789864029666,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.014833127317676144
+            },
+            {
+              "cluster": 3,
+              "customer_count": 245,
+              "retention_rate": 0.044897959183673466,
+              "mean_future_spend": 11.387102040816327,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.04897959183673469
+            }
+          ]
+        },
+        "cluster_profiles": [
+          {
+            "cluster": 0,
+            "customer_count": 7298,
+            "customer_pct": 84.65375246491126,
+            "median_recency_days": 137.30630787037035,
+            "mean_frequency_orders": 1.0004110715264456,
+            "median_spend": 93.97,
+            "mean_items": 1.0030145245272677,
+            "median_installments": 2.0,
+            "median_delivery_days": 11.020381944444443,
+            "mean_review_score": 4.189235085646781,
+            "future_retention_rate": 0.011647026582625376
+          },
+          {
+            "cluster": 1,
+            "customer_count": 269,
+            "customer_pct": 3.120287669643893,
+            "median_recency_days": 138.5920486111111,
+            "mean_frequency_orders": 1.0223048327137547,
+            "median_spend": 802.65,
+            "mean_items": 1.1561338289962826,
+            "median_installments": 7.0,
+            "median_delivery_days": 13.211707175925925,
+            "mean_review_score": 4.004,
+            "future_retention_rate": 0.0037174721189591076
+          },
+          {
+            "cluster": 2,
+            "customer_count": 809,
+            "customer_pct": 9.384062173761745,
+            "median_recency_days": 134.47668981481482,
+            "mean_frequency_orders": 1.065512978986403,
+            "median_spend": 148.14,
+            "mean_items": 2.0778739184178,
+            "median_installments": 2.0,
+            "median_delivery_days": 10.258912037037037,
+            "mean_review_score": 3.401433691756272,
+            "future_retention_rate": 0.013597033374536464
+          },
+          {
+            "cluster": 3,
+            "customer_count": 245,
+            "customer_pct": 2.841897691683099,
+            "median_recency_days": 124.5187037037037,
+            "mean_frequency_orders": 1.9020408163265305,
+            "median_spend": 223.67000000000002,
+            "mean_items": 2.4571428571428573,
+            "median_installments": 3.0,
+            "median_delivery_days": 10.395509259259258,
+            "mean_review_score": 3.9114942528735632,
+            "future_retention_rate": 0.044897959183673466
+          }
+        ]
+      },
+      "Baseline_5_GMM": {
+        "model_type": "GaussianMixture",
+        "feature_set": "RFM_Selected_NonRedundant",
+        "num_features": 8,
+        "num_clusters": 7,
+        "internal_metrics": {
+          "silhouette_score": 0.0784,
+          "davies_bouldin_index": 1.913,
+          "calinski_harabasz_score": 930.07
+        },
+        "stability_metrics": {
+          "mean_pairwise_ari": 0.5582,
+          "mean_pairwise_nmi": 0.6393
+        },
+        "downstream_utility": {
+          "cohort_baseline_retention_rate": 0.0125,
+          "cluster_retention_anova_f_stat": 2.8823,
+          "cluster_retention_anova_p_val": 0.0083053768596821,
+          "cluster_spend_anova_f_stat": 5.5447,
+          "cluster_spend_anova_p_val": 9.545110509267848e-06,
+          "max_retention_cluster": 2,
+          "max_retention_rate": 0.0335,
+          "min_retention_rate": 0.01,
+          "retention_lift": 2.67,
+          "cluster_breakdown": [
+            {
+              "cluster": 0,
+              "customer_count": 1143,
+              "retention_rate": 0.010498687664041995,
+              "mean_future_spend": 1.0529746281714785,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.010498687664041995
+            },
+            {
+              "cluster": 1,
+              "customer_count": 594,
+              "retention_rate": 0.010101010101010102,
+              "mean_future_spend": 1.4412794612794613,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.011784511784511785
+            },
+            {
+              "cluster": 2,
+              "customer_count": 418,
+              "retention_rate": 0.03349282296650718,
+              "mean_future_spend": 8.642775119617225,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.03827751196172249
+            },
+            {
+              "cluster": 3,
+              "customer_count": 2737,
+              "retention_rate": 0.01278772378516624,
+              "mean_future_spend": 1.799773474607234,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.013153087321885276
+            },
+            {
+              "cluster": 4,
+              "customer_count": 602,
+              "retention_rate": 0.009966777408637873,
+              "mean_future_spend": 2.1337873754152823,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.009966777408637873
+            },
+            {
+              "cluster": 5,
+              "customer_count": 3039,
+              "retention_rate": 0.01085883514313919,
+              "mean_future_spend": 1.4207634090161236,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.011846001974333662
+            },
+            {
+              "cluster": 6,
+              "customer_count": 88,
+              "retention_rate": 0.022727272727272728,
+              "mean_future_spend": 3.843295454545455,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.022727272727272728
+            }
+          ]
+        },
+        "cluster_profiles": [
+          {
+            "cluster": 0,
+            "customer_count": 1143,
+            "customer_pct": 13.258322700382784,
+            "median_recency_days": 150.38493055555554,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 102.03,
+            "mean_items": 1.0,
+            "median_installments": 3.0,
+            "median_delivery_days": 12.902997685185184,
+            "mean_review_score": 2.9758983347940404,
+            "future_retention_rate": 0.010498687664041995
+          },
+          {
+            "cluster": 1,
+            "customer_count": 594,
+            "customer_pct": 6.890151954529637,
+            "median_recency_days": 161.7866261574074,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 361.01,
+            "mean_items": 1.0,
+            "median_installments": 8.0,
+            "median_delivery_days": 13.13990162037037,
+            "mean_review_score": 3.2810344827586206,
+            "future_retention_rate": 0.010101010101010102
+          },
+          {
+            "cluster": 2,
+            "customer_count": 418,
+            "customer_pct": 4.848625449483818,
+            "median_recency_days": 126.7254398148148,
+            "mean_frequency_orders": 1.6770334928229664,
+            "median_spend": 232.56,
+            "mean_items": 2.8636363636363638,
+            "median_installments": 2.5,
+            "median_delivery_days": 10.94130787037037,
+            "mean_review_score": 3.828547008547009,
+            "future_retention_rate": 0.03349282296650718
+          },
+          {
+            "cluster": 3,
+            "customer_count": 2737,
+            "customer_pct": 31.748057069945478,
+            "median_recency_days": 138.1028472222222,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 140.23000000000002,
+            "mean_items": 1.0,
+            "median_installments": 3.0,
+            "median_delivery_days": 10.17515625,
+            "mean_review_score": 5.0,
+            "future_retention_rate": 0.01278772378516624
+          },
+          {
+            "cluster": 4,
+            "customer_count": 602,
+            "customer_pct": 6.982948613849901,
+            "median_recency_days": 138.02302083333333,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 152.81,
+            "mean_items": 2.0,
+            "median_installments": 2.0,
+            "median_delivery_days": 10.056909722222223,
+            "mean_review_score": 3.6504504504504505,
+            "future_retention_rate": 0.009966777408637873
+          },
+          {
+            "cluster": 5,
+            "customer_count": 3039,
+            "customer_pct": 35.25113095928546,
+            "median_recency_days": 126.92886574074073,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 64.9,
+            "mean_items": 1.0,
+            "median_installments": 1.0,
+            "median_delivery_days": 11.028043981481481,
+            "mean_review_score": 4.15718827269516,
+            "future_retention_rate": 0.01085883514313919
+          },
+          {
+            "cluster": 6,
+            "customer_count": 88,
+            "customer_pct": 1.0207632525229091,
+            "median_recency_days": 145.8443287037037,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 0.0,
+            "mean_items": 0.0,
+            "median_installments": 1.0,
+            "median_delivery_days": null,
+            "mean_review_score": 1.5061728395061729,
+            "future_retention_rate": 0.022727272727272728
+          }
+        ]
+      },
+      "Baseline_6_HDBSCAN": {
+        "model_type": "HDBSCAN",
+        "feature_set": "RFM_Selected_NonRedundant",
+        "num_features": 8,
+        "num_clusters": 6,
+        "internal_metrics": {
+          "silhouette_score": 0.1209,
+          "davies_bouldin_index": 1.9047,
+          "calinski_harabasz_score": 1497.21
+        },
+        "stability_metrics": {
+          "mean_pairwise_ari": 1.0,
+          "mean_pairwise_nmi": 1.0
+        },
+        "downstream_utility": {
+          "cohort_baseline_retention_rate": 0.0125,
+          "cluster_retention_anova_f_stat": 0.9385,
+          "cluster_retention_anova_p_val": 0.4546599720235035,
+          "cluster_spend_anova_f_stat": 2.8385,
+          "cluster_spend_anova_p_val": 0.014509445911542955,
+          "max_retention_cluster": 0,
+          "max_retention_rate": 0.026,
+          "min_retention_rate": 0.0092,
+          "retention_lift": 2.07,
+          "cluster_breakdown": [
+            {
+              "cluster": 0,
+              "customer_count": 231,
+              "retention_rate": 0.025974025974025976,
+              "mean_future_spend": 6.053160173160173,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.025974025974025976
+            },
+            {
+              "cluster": 1,
+              "customer_count": 625,
+              "retention_rate": 0.0112,
+              "mean_future_spend": 2.17536,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.0128
+            },
+            {
+              "cluster": 2,
+              "customer_count": 267,
+              "retention_rate": 0.011235955056179775,
+              "mean_future_spend": 1.0442322097378278,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.011235955056179775
+            },
+            {
+              "cluster": 3,
+              "customer_count": 326,
+              "retention_rate": 0.009202453987730062,
+              "mean_future_spend": 0.9096319018404908,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.009202453987730062
+            },
+            {
+              "cluster": 4,
+              "customer_count": 839,
+              "retention_rate": 0.014302741358760428,
+              "mean_future_spend": 1.7653992848629319,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.015494636471990465
+            },
+            {
+              "cluster": 5,
+              "customer_count": 3699,
+              "retention_rate": 0.011084076777507435,
+              "mean_future_spend": 1.4550554203838875,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.011895106785617735
+            }
+          ]
+        },
+        "cluster_profiles": [
+          {
+            "cluster": -1,
+            "customer_count": 2634,
+            "customer_pct": 30.553300081197076,
+            "median_recency_days": 174.37509259259258,
+            "mean_frequency_orders": 1.0197418375094913,
+            "median_spend": 176.875,
+            "mean_items": 1.1066818526955202,
+            "median_installments": 4.0,
+            "median_delivery_days": 14.661944444444444,
+            "mean_review_score": 3.5512840568374395,
+            "future_retention_rate": 0.01366742596810934
+          },
+          {
+            "cluster": 0,
+            "customer_count": 231,
+            "customer_pct": 2.6795035378726366,
+            "median_recency_days": 125.37229166666665,
+            "mean_frequency_orders": 2.0,
+            "median_spend": 213.10000000000002,
+            "mean_items": 2.2034632034632033,
+            "median_installments": 3.0,
+            "median_delivery_days": 11.19449074074074,
+            "mean_review_score": 4.1981566820276495,
+            "future_retention_rate": 0.025974025974025976
+          },
+          {
+            "cluster": 1,
+            "customer_count": 625,
+            "customer_pct": 7.249739009395661,
+            "median_recency_days": 134.2099074074074,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 153.32,
+            "mean_items": 2.1744,
+            "median_installments": 2.0,
+            "median_delivery_days": 9.985972222222221,
+            "mean_review_score": 3.700174825174825,
+            "future_retention_rate": 0.0112
+          },
+          {
+            "cluster": 2,
+            "customer_count": 267,
+            "customer_pct": 3.0970885048138266,
+            "median_recency_days": 96.06799768518518,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 81.63000000000001,
+            "mean_items": 1.0,
+            "median_installments": 1.0,
+            "median_delivery_days": 13.619270833333331,
+            "mean_review_score": 1.0,
+            "future_retention_rate": 0.011235955056179775
+          },
+          {
+            "cluster": 3,
+            "customer_count": 326,
+            "customer_pct": 3.7814638673007774,
+            "median_recency_days": 119.19276041666666,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 74.05,
+            "mean_items": 1.0,
+            "median_installments": 1.0,
+            "median_delivery_days": 12.658726851851851,
+            "mean_review_score": 3.0,
+            "future_retention_rate": 0.009202453987730062
+          },
+          {
+            "cluster": 4,
+            "customer_count": 839,
+            "customer_pct": 9.732049646212735,
+            "median_recency_days": 138.53024305555556,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 72.45,
+            "mean_items": 1.0,
+            "median_installments": 1.0,
+            "median_delivery_days": 10.816799768518518,
+            "mean_review_score": 4.0,
+            "future_retention_rate": 0.014302741358760428
+          },
+          {
+            "cluster": 5,
+            "customer_count": 3699,
+            "customer_pct": 42.906855353207284,
+            "median_recency_days": 115.17167824074073,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 78.91,
+            "mean_items": 1.0,
+            "median_installments": 1.0,
+            "median_delivery_days": 9.59554398148148,
+            "mean_review_score": 4.9998447204968945,
+            "future_retention_rate": 0.011084076777507435
+          }
+        ]
+      },
+      "Baseline_7_DEC": {
+        "model_type": "DEC",
+        "feature_set": "RFM_Selected_NonRedundant",
+        "num_features": 8,
+        "num_clusters": 5,
+        "internal_metrics": {
+          "silhouette_score": 0.1429,
+          "davies_bouldin_index": 1.6039,
+          "calinski_harabasz_score": 1490.72
+        },
+        "stability_metrics": {
+          "mean_pairwise_ari": 0.5829,
+          "mean_pairwise_nmi": 0.66
+        },
+        "downstream_utility": {
+          "cohort_baseline_retention_rate": 0.0125,
+          "cluster_retention_anova_f_stat": 6.3273,
+          "cluster_retention_anova_p_val": 4.429077632709385e-05,
+          "cluster_spend_anova_f_stat": 12.8855,
+          "cluster_spend_anova_p_val": 1.8464177732335582e-10,
+          "max_retention_cluster": 3,
+          "max_retention_rate": 0.0465,
+          "min_retention_rate": 0.0104,
+          "retention_lift": 3.71,
+          "cluster_breakdown": [
+            {
+              "cluster": 0,
+              "customer_count": 2330,
+              "retention_rate": 0.01201716738197425,
+              "mean_future_spend": 1.3938454935622318,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.013304721030042918
+            },
+            {
+              "cluster": 1,
+              "customer_count": 2881,
+              "retention_rate": 0.010413051023950017,
+              "mean_future_spend": 1.221464769177369,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.011107254425546685
+            },
+            {
+              "cluster": 2,
+              "customer_count": 2351,
+              "retention_rate": 0.011909825606125054,
+              "mean_future_spend": 1.9296682262866864,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.011909825606125054
+            },
+            {
+              "cluster": 3,
+              "customer_count": 258,
+              "retention_rate": 0.046511627906976744,
+              "mean_future_spend": 12.74937984496124,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.050387596899224806
+            },
+            {
+              "cluster": 4,
+              "customer_count": 801,
+              "retention_rate": 0.012484394506866416,
+              "mean_future_spend": 2.4295755305867663,
+              "median_future_spend": 0.0,
+              "mean_future_orders": 0.01373283395755306
+            }
+          ]
+        },
+        "cluster_profiles": [
+          {
+            "cluster": 0,
+            "customer_count": 2330,
+            "customer_pct": 27.027027027027028,
+            "median_recency_days": 54.340439814814815,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 87.125,
+            "mean_items": 1.0017167381974248,
+            "median_installments": 1.0,
+            "median_delivery_days": 10.942962962962962,
+            "mean_review_score": 5.0,
+            "future_retention_rate": 0.01201716738197425
+          },
+          {
+            "cluster": 1,
+            "customer_count": 2881,
+            "customer_pct": 33.41839693771024,
+            "median_recency_days": 142.48902777777778,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 100.08,
+            "mean_items": 1.01041305102395,
+            "median_installments": 2.0,
+            "median_delivery_days": 12.894837962962962,
+            "mean_review_score": 2.994967025338424,
+            "future_retention_rate": 0.010413051023950017
+          },
+          {
+            "cluster": 2,
+            "customer_count": 2351,
+            "customer_pct": 27.27061825774272,
+            "median_recency_days": 236.08274305555554,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 105.28,
+            "mean_items": 1.006380263717567,
+            "median_installments": 3.0,
+            "median_delivery_days": 9.727141203703702,
+            "mean_review_score": 5.0,
+            "future_retention_rate": 0.011909825606125054
+          },
+          {
+            "cluster": 3,
+            "customer_count": 258,
+            "customer_pct": 2.992692263078529,
+            "median_recency_days": 128.38619212962962,
+            "mean_frequency_orders": 2.0968992248062017,
+            "median_spend": 220.76999999999998,
+            "mean_items": 2.395348837209302,
+            "median_installments": 2.583333333333333,
+            "median_delivery_days": 11.244522569444445,
+            "mean_review_score": 4.221625344352617,
+            "future_retention_rate": 0.046511627906976744
+          },
+          {
+            "cluster": 4,
+            "customer_count": 801,
+            "customer_pct": 9.291265514441479,
+            "median_recency_days": 134.47668981481482,
+            "mean_frequency_orders": 1.0,
+            "median_spend": 150.60000000000002,
+            "mean_items": 2.1036204744069913,
+            "median_installments": 2.0,
+            "median_delivery_days": 10.198217592592592,
+            "mean_review_score": 3.3516260162601625,
+            "future_retention_rate": 0.012484394506866416
+          }
+        ]
+      }
+    }
+  },
+  "models": {
+    "Baseline_1_KMeans_RFM": {
+      "model_type": "KMeans",
+      "feature_set": "RFM",
+      "num_features": 3,
+      "num_clusters": 5,
+      "original_internal_metrics": {
+        "silhouette_score": 0.5314,
+        "davies_bouldin_index": 0.6182,
+        "calinski_harabasz_score": 7213.43
+      },
+      "original_stability_metrics": {
+        "mean_pairwise_ari": 0.9937,
+        "mean_pairwise_nmi": 0.9814
+      },
+      "original_downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 7.2742,
+        "cluster_retention_anova_p_val": 7.632208248049971e-06,
+        "cluster_spend_anova_f_stat": 12.8513,
+        "cluster_spend_anova_p_val": 1.9712288580711736e-10,
+        "max_retention_cluster": 0,
+        "max_retention_rate": 0.0471,
+        "min_retention_rate": 0.0,
+        "retention_lift": 3.76,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 255,
+            "retention_rate": 0.047058823529411764,
+            "mean_future_spend": 12.899372549019606,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.050980392156862744
+          },
+          {
+            "cluster": 1,
+            "customer_count": 3128,
+            "retention_rate": 0.010230179028132993,
+            "mean_future_spend": 1.7058727621483376,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.010549872122762148
+          },
+          {
+            "cluster": 2,
+            "customer_count": 332,
+            "retention_rate": 0.0030120481927710845,
+            "mean_future_spend": 0.2655120481927711,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.0030120481927710845
+          },
+          {
+            "cluster": 3,
+            "customer_count": 4859,
+            "retention_rate": 0.01296563078822803,
+            "mean_future_spend": 1.610479522535501,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.013994649104754064
+          },
+          {
+            "cluster": 4,
+            "customer_count": 47,
+            "retention_rate": 0.0,
+            "mean_future_spend": 0.0,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.0
+          }
+        ]
+      },
+      "original_cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 255,
+          "customer_pct": 2.9578935158334296,
+          "median_recency_days": 130.3369097222222,
+          "mean_frequency_orders": 2.0980392156862746,
+          "median_spend": 219.67000000000002,
+          "mean_items": 2.3372549019607844,
+          "median_installments": 2.5,
+          "median_delivery_days": 11.239716435185185,
+          "mean_review_score": 4.2202231520223155,
+          "future_retention_rate": 0.047058823529411764
+        },
+        {
+          "cluster": 1,
+          "customer_count": 3128,
+          "customer_pct": 36.28349379422341,
+          "median_recency_days": 273.2708622685185,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 95.505,
+          "mean_items": 1.1010230179028133,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.376435185185185,
+          "mean_review_score": 4.157801418439717,
+          "future_retention_rate": 0.010230179028132993
+        },
+        {
+          "cluster": 2,
+          "customer_count": 332,
+          "customer_pct": 3.851061361790976,
+          "median_recency_days": 132.67262152777778,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 652.69,
+          "mean_items": 1.3614457831325302,
+          "median_installments": 5.0,
+          "median_delivery_days": 12.284039351851852,
+          "mean_review_score": 4.0,
+          "future_retention_rate": 0.0030120481927710845
+        },
+        {
+          "cluster": 3,
+          "customer_count": 4859,
+          "customer_pct": 56.362370954645634,
+          "median_recency_days": 81.18908564814815,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 98.31,
+          "mean_items": 1.0987857583864993,
+          "median_installments": 1.0,
+          "median_delivery_days": 11.319542824074073,
+          "mean_review_score": 4.067061831706183,
+          "future_retention_rate": 0.01296563078822803
+        },
+        {
+          "cluster": 4,
+          "customer_count": 47,
+          "customer_pct": 0.5451803735065538,
+          "median_recency_days": 175.22671296296295,
+          "mean_frequency_orders": 1.0638297872340425,
+          "median_spend": 1944.86,
+          "mean_items": 1.7659574468085106,
+          "median_installments": 6.0,
+          "median_delivery_days": 12.774976851851852,
+          "mean_review_score": 3.688888888888889,
+          "future_retention_rate": 0.0
+        }
+      ],
+      "stability_interpretation": {
+        "B2_B4": null,
+        "B3_DEC": null
+      },
+      "reported_original_lift": 3.76,
+      "corrected_max_non_noise_cluster": 0,
+      "corrected_max_non_noise_retention_rate": 0.04705882,
+      "corrected_max_non_noise_lift": 3.75642702,
+      "corrected_max_non_noise_effect_size_cohens_h": 0.21301478,
+      "clusters": [
+        {
+          "cluster": 0,
+          "customer_count": 255,
+          "retained_count": 12,
+          "retention_rate": 0.04705882,
+          "retention_rate_pct": 4.705882,
+          "retention_ci95": [
+            0.02712159,
+            0.08044023
+          ],
+          "retention_ci95_pct": [
+            2.712159,
+            8.044023
+          ],
+          "lift_vs_test_baseline": 3.75642702,
+          "cohens_h_vs_test_baseline": 0.21301478
+        },
+        {
+          "cluster": 1,
+          "customer_count": 3128,
+          "retained_count": 32,
+          "retention_rate": 0.01023018,
+          "retention_rate_pct": 1.023018,
+          "retention_ci95": [
+            0.00725592,
+            0.01440593
+          ],
+          "retention_ci95_pct": [
+            0.725592,
+            1.440593
+          ],
+          "lift_vs_test_baseline": 0.81661457,
+          "cohens_h_vs_test_baseline": -0.02168791
+        },
+        {
+          "cluster": 2,
+          "customer_count": 332,
+          "retained_count": 1,
+          "retention_rate": 0.00301205,
+          "retention_rate_pct": 0.301205,
+          "retention_ci95": [
+            0.0005319,
+            0.0168616
+          ],
+          "retention_ci95_pct": [
+            0.05319,
+            1.68616
+          ],
+          "lift_vs_test_baseline": 0.24043396,
+          "cohens_h_vs_test_baseline": -0.11450367
+        },
+        {
+          "cluster": 3,
+          "customer_count": 4859,
+          "retained_count": 63,
+          "retention_rate": 0.01296563,
+          "retention_rate_pct": 1.296563,
+          "retention_ci95": [
+            0.01014762,
+            0.01655311
+          ],
+          "retention_ci95_pct": [
+            1.014762,
+            1.655311
+          ],
+          "lift_vs_test_baseline": 1.03496947,
+          "cohens_h_vs_test_baseline": 0.00390535
+        },
+        {
+          "cluster": 4,
+          "customer_count": 47,
+          "retained_count": 0,
+          "retention_rate": 0.0,
+          "retention_rate_pct": 0.0,
+          "retention_ci95": [
+            0.0,
+            0.0755576
+          ],
+          "retention_ci95_pct": [
+            0.0,
+            7.55576
+          ],
+          "lift_vs_test_baseline": 0.0,
+          "cohens_h_vs_test_baseline": -0.22432311
+        }
+      ],
+      "binary_retention_analysis": {
+        "omnibus_test": "Pearson chi-square test of retention by cluster",
+        "omnibus_chi2": 29.01579793,
+        "omnibus_degrees_of_freedom": 4,
+        "omnibus_p_value": 7.7598352087593e-06,
+        "pairwise_test": "Two-sided Fisher exact test",
+        "pairwise_correction": "Holm step-down family-wise error correction",
+        "pairwise_comparisons": [
+          {
+            "cluster_a": 0,
+            "cluster_b": 1,
+            "odds_ratio_a_vs_b": 4.77777778,
+            "raw_p_value": 6.185428728731433e-05,
+            "holm_adjusted_p_value": 0.0006185428728731434,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 16.34567901,
+            "raw_p_value": 0.0003083504887326383,
+            "holm_adjusted_p_value": 0.0025771708368005604,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 3.75935724,
+            "raw_p_value": 0.00028635231520006226,
+            "holm_adjusted_p_value": 0.0025771708368005604,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": null,
+            "raw_p_value": 0.2245495794976676,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 3.42118863,
+            "raw_p_value": 0.3648665946610442,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.78684221,
+            "raw_p_value": 0.29166039192844306,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": null,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.22999089,
+            "raw_p_value": 0.18928199239887566,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": null,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 3,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": null,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          }
+        ],
+        "claim_policy": "A particular cluster difference is called significant only when its Holm-adjusted p-value is below 0.05."
+      },
+      "fit_scope": "train_fit_test_predict"
+    },
+    "Baseline_2_KMeans_RFM_Behavioral": {
+      "model_type": "KMeans",
+      "feature_set": "RFM_Behavioral",
+      "num_features": 7,
+      "num_clusters": 4,
+      "original_internal_metrics": {
+        "silhouette_score": 0.3379,
+        "davies_bouldin_index": 1.0759,
+        "calinski_harabasz_score": 2691.23
+      },
+      "original_stability_metrics": {
+        "mean_pairwise_ari": 0.9998,
+        "mean_pairwise_nmi": 0.9994
+      },
+      "original_downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 7.2248,
+        "cluster_retention_anova_p_val": 7.719025041753878e-05,
+        "cluster_spend_anova_f_stat": 11.4809,
+        "cluster_spend_anova_p_val": 1.650072352858084e-07,
+        "max_retention_cluster": 3,
+        "max_retention_rate": 0.0433,
+        "min_retention_rate": 0.0096,
+        "retention_lift": 3.46,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 2714,
+            "retention_rate": 0.009579955784819455,
+            "mean_future_spend": 1.7846462785556374,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.009579955784819455
+          },
+          {
+            "cluster": 1,
+            "customer_count": 1259,
+            "retention_rate": 0.011119936457505957,
+            "mean_future_spend": 1.24,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011914217633042097
+          },
+          {
+            "cluster": 2,
+            "customer_count": 4394,
+            "retention_rate": 0.01297223486572599,
+            "mean_future_spend": 1.6714269458352298,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.014110150204824761
+          },
+          {
+            "cluster": 3,
+            "customer_count": 254,
+            "retention_rate": 0.04330708661417323,
+            "mean_future_spend": 10.983622047244095,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.047244094488188976
+          }
+        ]
+      },
+      "original_cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 2714,
+          "customer_pct": 31.48126667439972,
+          "median_recency_days": 275.3276909722222,
+          "mean_frequency_orders": 1.005526897568165,
+          "median_spend": 84.62,
+          "mean_items": 1.0792188651436994,
+          "median_installments": 1.0,
+          "median_delivery_days": 10.451342592592592,
+          "mean_review_score": 4.166419019316494,
+          "future_retention_rate": 0.009579955784819455
+        },
+        {
+          "cluster": 1,
+          "customer_count": 1259,
+          "customer_pct": 14.60387426052662,
+          "median_recency_days": 154.46096064814813,
+          "mean_frequency_orders": 1.0127084988085782,
+          "median_spend": 232.70999999999998,
+          "mean_items": 1.2255758538522636,
+          "median_installments": 8.0,
+          "median_delivery_days": 11.707534722222222,
+          "mean_review_score": 4.020833333333334,
+          "future_retention_rate": 0.011119936457505957
+        },
+        {
+          "cluster": 2,
+          "customer_count": 4394,
+          "customer_pct": 50.96856513165526,
+          "median_recency_days": 80.04034143518518,
+          "mean_frequency_orders": 1.0059171597633136,
+          "median_spend": 91.055,
+          "mean_items": 1.0912608101957215,
+          "median_installments": 1.0,
+          "median_delivery_days": 11.227372685185184,
+          "mean_review_score": 4.0956980937661,
+          "future_retention_rate": 0.01297223486572599
+        },
+        {
+          "cluster": 3,
+          "customer_count": 254,
+          "customer_pct": 2.946293933418397,
+          "median_recency_days": 122.31129629629629,
+          "mean_frequency_orders": 1.889763779527559,
+          "median_spend": 229.925,
+          "mean_items": 2.547244094488189,
+          "median_installments": 3.0,
+          "median_delivery_days": 10.485260416666666,
+          "mean_review_score": 3.885277777777778,
+          "future_retention_rate": 0.04330708661417323
+        }
+      ],
+      "stability_interpretation": {
+        "B2_B4": "Near-one ARI/NMI indicates the train-fitted KMeans partitions are nearly unchanged across seeds; this is consistent with well-separated, strongly initialized solutions, not evidence that the feature sets are equivalent.",
+        "B3_DEC": null
+      },
+      "reported_original_lift": 3.46,
+      "corrected_max_non_noise_cluster": 3,
+      "corrected_max_non_noise_retention_rate": 0.04330709,
+      "corrected_max_non_noise_lift": 3.45694809,
+      "corrected_max_non_noise_effect_size_cohens_h": 0.1949482,
+      "clusters": [
+        {
+          "cluster": 0,
+          "customer_count": 2714,
+          "retained_count": 26,
+          "retention_rate": 0.00957996,
+          "retention_rate_pct": 0.957996,
+          "retention_ci95": [
+            0.00654602,
+            0.01400023
+          ],
+          "retention_ci95_pct": [
+            0.654602,
+            1.400023
+          ],
+          "lift_vs_test_baseline": 0.7647111,
+          "cohens_h_vs_test_baseline": -0.02825471
+        },
+        {
+          "cluster": 1,
+          "customer_count": 1259,
+          "retained_count": 14,
+          "retention_rate": 0.01111994,
+          "retention_rate_pct": 1.111994,
+          "retention_ci95": [
+            0.00663536,
+            0.01857878
+          ],
+          "retention_ci95_pct": [
+            0.663536,
+            1.857878
+          ],
+          "lift_vs_test_baseline": 0.88763863,
+          "cohens_h_vs_test_baseline": -0.01302805
+        },
+        {
+          "cluster": 2,
+          "customer_count": 4394,
+          "retained_count": 57,
+          "retention_rate": 0.01297223,
+          "retention_rate_pct": 1.297223,
+          "retention_ci95": [
+            0.01002644,
+            0.01676886
+          ],
+          "retention_ci95_pct": [
+            1.002644,
+            1.676886
+          ],
+          "lift_vs_test_baseline": 1.03549664,
+          "cohens_h_vs_test_baseline": 0.00396372
+        },
+        {
+          "cluster": 3,
+          "customer_count": 254,
+          "retained_count": 11,
+          "retention_rate": 0.04330709,
+          "retention_rate_pct": 4.330709,
+          "retention_ci95": [
+            0.02435139,
+            0.07587089
+          ],
+          "retention_ci95_pct": [
+            2.435139,
+            7.587089
+          ],
+          "lift_vs_test_baseline": 3.45694809,
+          "cohens_h_vs_test_baseline": 0.1949482
+        }
+      ],
+      "binary_retention_analysis": {
+        "omnibus_test": "Pearson chi-square test of retention by cluster",
+        "omnibus_chi2": 21.63013936,
+        "omnibus_degrees_of_freedom": 3,
+        "omnibus_p_value": 7.787280679989844e-05,
+        "pairwise_test": "Two-sided Fisher exact test",
+        "pairwise_correction": "Holm step-down family-wise error correction",
+        "pairwise_comparisons": [
+          {
+            "cluster_a": 0,
+            "cluster_b": 1,
+            "odds_ratio_a_vs_b": 0.86017219,
+            "raw_p_value": 0.7328449884153766,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.73596752,
+            "raw_p_value": 0.2125152451428755,
+            "holm_adjusted_p_value": 0.6375457354286265,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.21367695,
+            "raw_p_value": 0.00016597865900586426,
+            "holm_adjusted_p_value": 0.0009958719540351857,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.85560488,
+            "raw_p_value": 0.6689587829163013,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.24841183,
+            "raw_p_value": 0.0011847254066084962,
+            "holm_adjusted_p_value": 0.004968198090443245,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.29033475,
+            "raw_p_value": 0.000993639618088649,
+            "holm_adjusted_p_value": 0.004968198090443245,
+            "significant_at_0.05": true
+          }
+        ],
+        "claim_policy": "A particular cluster difference is called significant only when its Holm-adjusted p-value is below 0.05."
+      },
+      "fit_scope": "train_fit_test_predict"
+    },
+    "Baseline_3_KMeans_RFM_Selected_NonRedundant": {
+      "model_type": "KMeans",
+      "feature_set": "RFM_Selected_NonRedundant",
+      "num_features": 8,
+      "num_clusters": 5,
+      "original_internal_metrics": {
+        "silhouette_score": 0.3253,
+        "davies_bouldin_index": 1.2518,
+        "calinski_harabasz_score": 1865.92
+      },
+      "original_stability_metrics": {
+        "mean_pairwise_ari": 0.6034,
+        "mean_pairwise_nmi": 0.7136
+      },
+      "original_downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 6.3845,
+        "cluster_retention_anova_p_val": 3.984566889452564e-05,
+        "cluster_spend_anova_f_stat": 12.9022,
+        "cluster_spend_anova_p_val": 1.7884251367181513e-10,
+        "max_retention_cluster": 2,
+        "max_retention_rate": 0.0465,
+        "min_retention_rate": 0.009,
+        "retention_lift": 3.71,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 1189,
+            "retention_rate": 0.011774600504625737,
+            "mean_future_spend": 1.517375946173255,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.012615643397813289
+          },
+          {
+            "cluster": 1,
+            "customer_count": 5275,
+            "retention_rate": 0.011753554502369668,
+            "mean_future_spend": 1.6403469194312796,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.012511848341232227
+          },
+          {
+            "cluster": 2,
+            "customer_count": 258,
+            "retention_rate": 0.046511627906976744,
+            "mean_future_spend": 12.74937984496124,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.050387596899224806
+          },
+          {
+            "cluster": 3,
+            "customer_count": 1105,
+            "retention_rate": 0.00904977375565611,
+            "mean_future_spend": 0.7659366515837104,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.00904977375565611
+          },
+          {
+            "cluster": 4,
+            "customer_count": 794,
+            "retention_rate": 0.012594458438287154,
+            "mean_future_spend": 2.4509949622166247,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.013853904282115869
+          }
+        ]
+      },
+      "original_cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 1189,
+          "customer_pct": 13.791903491474306,
+          "median_recency_days": 173.0192361111111,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 212.32000000000002,
+          "mean_items": 1.015138772077376,
+          "median_installments": 8.0,
+          "median_delivery_days": 11.574166666666667,
+          "mean_review_score": 4.388888888888889,
+          "future_retention_rate": 0.011774600504625737
+        },
+        {
+          "cluster": 1,
+          "customer_count": 5275,
+          "customer_pct": 61.18779723929938,
+          "median_recency_days": 131.15984953703702,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 81.63000000000001,
+          "mean_items": 1.0036018957345971,
+          "median_installments": 1.0,
+          "median_delivery_days": 10.114583333333332,
+          "mean_review_score": 4.6675338189386055,
+          "future_retention_rate": 0.011753554502369668
+        },
+        {
+          "cluster": 2,
+          "customer_count": 258,
+          "customer_pct": 2.992692263078529,
+          "median_recency_days": 128.38619212962962,
+          "mean_frequency_orders": 2.0968992248062017,
+          "median_spend": 220.76999999999998,
+          "mean_items": 2.395348837209302,
+          "median_installments": 2.583333333333333,
+          "median_delivery_days": 11.244522569444445,
+          "mean_review_score": 4.221625344352617,
+          "future_retention_rate": 0.046511627906976744
+        },
+        {
+          "cluster": 3,
+          "customer_count": 1105,
+          "customer_pct": 12.81753856861153,
+          "median_recency_days": 132.20453703703703,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 102.03,
+          "mean_items": 1.0171945701357465,
+          "median_installments": 2.0,
+          "median_delivery_days": 19.177413194444444,
+          "mean_review_score": 1.808529945553539,
+          "future_retention_rate": 0.00904977375565611
+        },
+        {
+          "cluster": 4,
+          "customer_count": 794,
+          "customer_pct": 9.210068437536249,
+          "median_recency_days": 134.56195601851852,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 150.83,
+          "mean_items": 2.104534005037783,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.144265046296296,
+          "mean_review_score": 3.367667121418827,
+          "future_retention_rate": 0.012594458438287154
+        }
+      ],
+      "stability_interpretation": {
+        "B2_B4": null,
+        "B3_DEC": "Lower ARI/NMI indicates materially different partitions across seeds. B3 KMeans is more sensitive to initialization in the selected feature space; DEC additionally depends on stochastic neural initialization and optimization."
+      },
+      "reported_original_lift": 3.71,
+      "corrected_max_non_noise_cluster": 2,
+      "corrected_max_non_noise_retention_rate": 0.04651163,
+      "corrected_max_non_noise_lift": 3.71274763,
+      "corrected_max_non_noise_effect_size_cohens_h": 0.21042362,
+      "clusters": [
+        {
+          "cluster": 0,
+          "customer_count": 1189,
+          "retained_count": 14,
+          "retention_rate": 0.0117746,
+          "retention_rate_pct": 1.17746,
+          "retention_ci95": [
+            0.0070267,
+            0.01966709
+          ],
+          "retention_ci95_pct": [
+            0.70267,
+            1.966709
+          ],
+          "lift_vs_test_baseline": 0.93989658,
+          "cohens_h_vs_test_baseline": -0.00687329
+        },
+        {
+          "cluster": 1,
+          "customer_count": 5275,
+          "retained_count": 62,
+          "retention_rate": 0.01175355,
+          "retention_rate_pct": 1.175355,
+          "retention_ci95": [
+            0.00917988,
+            0.01503783
+          ],
+          "retention_ci95_pct": [
+            0.917988,
+            1.503783
+          ],
+          "lift_vs_test_baseline": 0.93821661,
+          "cohens_h_vs_test_baseline": -0.00706848
+        },
+        {
+          "cluster": 2,
+          "customer_count": 258,
+          "retained_count": 12,
+          "retention_rate": 0.04651163,
+          "retention_rate_pct": 4.651163,
+          "retention_ci95": [
+            0.02680387,
+            0.07952558
+          ],
+          "retention_ci95_pct": [
+            2.680387,
+            7.952558
+          ],
+          "lift_vs_test_baseline": 3.71274763,
+          "cohens_h_vs_test_baseline": 0.21042362
+        },
+        {
+          "cluster": 3,
+          "customer_count": 1105,
+          "retained_count": 10,
+          "retention_rate": 0.00904977,
+          "retention_rate_pct": 0.904977,
+          "retention_ci95": [
+            0.004923,
+            0.01657823
+          ],
+          "retention_ci95_pct": [
+            0.4923,
+            1.657823
+          ],
+          "lift_vs_test_baseline": 0.72238981,
+          "cohens_h_vs_test_baseline": -0.03377437
+        },
+        {
+          "cluster": 4,
+          "customer_count": 794,
+          "retained_count": 10,
+          "retention_rate": 0.01259446,
+          "retention_rate_pct": 1.259446,
+          "retention_ci95": [
+            0.00685521,
+            0.02302724
+          ],
+          "retention_ci95_pct": [
+            0.685521,
+            2.302724
+          ],
+          "lift_vs_test_baseline": 1.00534098,
+          "cohens_h_vs_test_baseline": 0.00060079
+        }
+      ],
+      "binary_retention_analysis": {
+        "omnibus_test": "Pearson chi-square test of retention by cluster",
+        "omnibus_chi2": 25.47743097,
+        "omnibus_degrees_of_freedom": 4,
+        "omnibus_p_value": 4.03266632957366e-05,
+        "pairwise_test": "Two-sided Fisher exact test",
+        "pairwise_correction": "Holm step-down family-wise error correction",
+        "pairwise_comparisons": [
+          {
+            "cluster_a": 0,
+            "cluster_b": 1,
+            "odds_ratio_a_vs_b": 1.00181194,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.24425532,
+            "raw_p_value": 0.0007292899294629551,
+            "holm_adjusted_p_value": 0.005834319435703641,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 1.30468085,
+            "raw_p_value": 0.5457281483131883,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.93412766,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.24381354,
+            "raw_p_value": 0.0001352153555655162,
+            "holm_adjusted_p_value": 0.0013521535556551621,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 1.30232112,
+            "raw_p_value": 0.5318474030594871,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.93243814,
+            "raw_p_value": 0.8599129224527449,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 5.34146341,
+            "raw_p_value": 0.00017689591177539444,
+            "holm_adjusted_p_value": 0.0015920632059785499,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 3.82439024,
+            "raw_p_value": 0.002167414106966203,
+            "holm_adjusted_p_value": 0.015171898748763422,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 3,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.71598174,
+            "raw_p_value": 0.49881661315280124,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          }
+        ],
+        "claim_policy": "A particular cluster difference is called significant only when its Holm-adjusted p-value is below 0.05."
+      },
+      "fit_scope": "train_fit_test_predict"
+    },
+    "Baseline_4_KMeans_RFM_All_Engineered": {
+      "model_type": "KMeans",
+      "feature_set": "RFM_All_Engineered",
+      "num_features": 16,
+      "num_clusters": 4,
+      "original_internal_metrics": {
+        "silhouette_score": 0.5096,
+        "davies_bouldin_index": 1.1484,
+        "calinski_harabasz_score": 1646.96
+      },
+      "original_stability_metrics": {
+        "mean_pairwise_ari": 0.9996,
+        "mean_pairwise_nmi": 0.9988
+      },
+      "original_downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 7.6744,
+        "cluster_retention_anova_p_val": 4.050208643536364e-05,
+        "cluster_spend_anova_f_stat": 13.0318,
+        "cluster_spend_anova_p_val": 1.72797354544114e-08,
+        "max_retention_cluster": 3,
+        "max_retention_rate": 0.0449,
+        "min_retention_rate": 0.0037,
+        "retention_lift": 3.58,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 7298,
+            "retention_rate": 0.011647026582625376,
+            "mean_future_spend": 1.536749794464237,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.012332145793368046
+          },
+          {
+            "cluster": 1,
+            "customer_count": 269,
+            "retention_rate": 0.0037174721189591076,
+            "mean_future_spend": 0.32769516728624537,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.0037174721189591076
+          },
+          {
+            "cluster": 2,
+            "customer_count": 809,
+            "retention_rate": 0.013597033374536464,
+            "mean_future_spend": 3.0229789864029666,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.014833127317676144
+          },
+          {
+            "cluster": 3,
+            "customer_count": 245,
+            "retention_rate": 0.044897959183673466,
+            "mean_future_spend": 11.387102040816327,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.04897959183673469
+          }
+        ]
+      },
+      "original_cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 7298,
+          "customer_pct": 84.65375246491126,
+          "median_recency_days": 137.30630787037035,
+          "mean_frequency_orders": 1.0004110715264456,
+          "median_spend": 93.97,
+          "mean_items": 1.0030145245272677,
+          "median_installments": 2.0,
+          "median_delivery_days": 11.020381944444443,
+          "mean_review_score": 4.189235085646781,
+          "future_retention_rate": 0.011647026582625376
+        },
+        {
+          "cluster": 1,
+          "customer_count": 269,
+          "customer_pct": 3.120287669643893,
+          "median_recency_days": 138.5920486111111,
+          "mean_frequency_orders": 1.0223048327137547,
+          "median_spend": 802.65,
+          "mean_items": 1.1561338289962826,
+          "median_installments": 7.0,
+          "median_delivery_days": 13.211707175925925,
+          "mean_review_score": 4.004,
+          "future_retention_rate": 0.0037174721189591076
+        },
+        {
+          "cluster": 2,
+          "customer_count": 809,
+          "customer_pct": 9.384062173761745,
+          "median_recency_days": 134.47668981481482,
+          "mean_frequency_orders": 1.065512978986403,
+          "median_spend": 148.14,
+          "mean_items": 2.0778739184178,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.258912037037037,
+          "mean_review_score": 3.401433691756272,
+          "future_retention_rate": 0.013597033374536464
+        },
+        {
+          "cluster": 3,
+          "customer_count": 245,
+          "customer_pct": 2.841897691683099,
+          "median_recency_days": 124.5187037037037,
+          "mean_frequency_orders": 1.9020408163265305,
+          "median_spend": 223.67000000000002,
+          "mean_items": 2.4571428571428573,
+          "median_installments": 3.0,
+          "median_delivery_days": 10.395509259259258,
+          "mean_review_score": 3.9114942528735632,
+          "future_retention_rate": 0.044897959183673466
+        }
+      ],
+      "stability_interpretation": {
+        "B2_B4": "Near-one ARI/NMI indicates the train-fitted KMeans partitions are nearly unchanged across seeds; this is consistent with well-separated, strongly initialized solutions, not evidence that the feature sets are equivalent.",
+        "B3_DEC": null
+      },
+      "reported_original_lift": 3.58,
+      "corrected_max_non_noise_cluster": 3,
+      "corrected_max_non_noise_retention_rate": 0.04489796,
+      "corrected_max_non_noise_lift": 3.58393802,
+      "corrected_max_non_noise_effect_size_cohens_h": 0.20269666,
+      "clusters": [
+        {
+          "cluster": 0,
+          "customer_count": 7298,
+          "retained_count": 85,
+          "retention_rate": 0.01164703,
+          "retention_rate_pct": 1.164703,
+          "retention_ci95": [
+            0.00942966,
+            0.01437823
+          ],
+          "retention_ci95_pct": [
+            0.942966,
+            1.437823
+          ],
+          "lift_vs_test_baseline": 0.92971311,
+          "cohens_h_vs_test_baseline": -0.00805913
+        },
+        {
+          "cluster": 1,
+          "customer_count": 269,
+          "retained_count": 1,
+          "retention_rate": 0.00371747,
+          "retention_rate_pct": 0.371747,
+          "retention_ci95": [
+            0.00065653,
+            0.02075319
+          ],
+          "retention_ci95_pct": [
+            0.065653,
+            2.075319
+          ],
+          "lift_vs_test_baseline": 0.29674377,
+          "cohens_h_vs_test_baseline": -0.10230528
+        },
+        {
+          "cluster": 2,
+          "customer_count": 809,
+          "retained_count": 11,
+          "retention_rate": 0.01359703,
+          "retention_rate_pct": 1.359703,
+          "retention_ci95": [
+            0.00760905,
+            0.02418246
+          ],
+          "retention_ci95_pct": [
+            0.760905,
+            2.418246
+          ],
+          "lift_vs_test_baseline": 1.0853706,
+          "cohens_h_vs_test_baseline": 0.00942128
+        },
+        {
+          "cluster": 3,
+          "customer_count": 245,
+          "retained_count": 11,
+          "retention_rate": 0.04489796,
+          "retention_rate_pct": 4.489796,
+          "retention_ci95": [
+            0.02525246,
+            0.07859462
+          ],
+          "retention_ci95_pct": [
+            2.525246,
+            7.859462
+          ],
+          "lift_vs_test_baseline": 3.58393802,
+          "cohens_h_vs_test_baseline": 0.20269666
+        }
+      ],
+      "binary_retention_analysis": {
+        "omnibus_test": "Pearson chi-square test of retention by cluster",
+        "omnibus_chi2": 22.97254281,
+        "omnibus_degrees_of_freedom": 3,
+        "omnibus_p_value": 4.0918689963859196e-05,
+        "pairwise_test": "Two-sided Fisher exact test",
+        "pairwise_correction": "Holm step-down family-wise error correction",
+        "pairwise_comparisons": [
+          {
+            "cluster_a": 0,
+            "cluster_b": 1,
+            "odds_ratio_a_vs_b": 3.15818661,
+            "raw_p_value": 0.37428788959108417,
+            "holm_adjusted_p_value": 0.9396292339962705,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.85489583,
+            "raw_p_value": 0.6063692196048371,
+            "holm_adjusted_p_value": 0.9396292339962705,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.25068374,
+            "raw_p_value": 0.0002605984721285394,
+            "holm_adjusted_p_value": 0.0015635908327712364,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.27069199,
+            "raw_p_value": 0.3132097446654235,
+            "holm_adjusted_p_value": 0.9396292339962705,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.07937585,
+            "raw_p_value": 0.0021360102907526757,
+            "holm_adjusted_p_value": 0.010680051453763379,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.29323308,
+            "raw_p_value": 0.007892623435095397,
+            "holm_adjusted_p_value": 0.03157049374038159,
+            "significant_at_0.05": true
+          }
+        ],
+        "claim_policy": "A particular cluster difference is called significant only when its Holm-adjusted p-value is below 0.05."
+      },
+      "fit_scope": "train_fit_test_predict"
+    },
+    "Baseline_5_GMM": {
+      "model_type": "GaussianMixture",
+      "feature_set": "RFM_Selected_NonRedundant",
+      "num_features": 8,
+      "num_clusters": 7,
+      "original_internal_metrics": {
+        "silhouette_score": 0.0784,
+        "davies_bouldin_index": 1.913,
+        "calinski_harabasz_score": 930.07
+      },
+      "original_stability_metrics": {
+        "mean_pairwise_ari": 0.5582,
+        "mean_pairwise_nmi": 0.6393
+      },
+      "original_downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 2.8823,
+        "cluster_retention_anova_p_val": 0.0083053768596821,
+        "cluster_spend_anova_f_stat": 5.5447,
+        "cluster_spend_anova_p_val": 9.545110509267848e-06,
+        "max_retention_cluster": 2,
+        "max_retention_rate": 0.0335,
+        "min_retention_rate": 0.01,
+        "retention_lift": 2.67,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 1143,
+            "retention_rate": 0.010498687664041995,
+            "mean_future_spend": 1.0529746281714785,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.010498687664041995
+          },
+          {
+            "cluster": 1,
+            "customer_count": 594,
+            "retention_rate": 0.010101010101010102,
+            "mean_future_spend": 1.4412794612794613,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011784511784511785
+          },
+          {
+            "cluster": 2,
+            "customer_count": 418,
+            "retention_rate": 0.03349282296650718,
+            "mean_future_spend": 8.642775119617225,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.03827751196172249
+          },
+          {
+            "cluster": 3,
+            "customer_count": 2737,
+            "retention_rate": 0.01278772378516624,
+            "mean_future_spend": 1.799773474607234,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.013153087321885276
+          },
+          {
+            "cluster": 4,
+            "customer_count": 602,
+            "retention_rate": 0.009966777408637873,
+            "mean_future_spend": 2.1337873754152823,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.009966777408637873
+          },
+          {
+            "cluster": 5,
+            "customer_count": 3039,
+            "retention_rate": 0.01085883514313919,
+            "mean_future_spend": 1.4207634090161236,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011846001974333662
+          },
+          {
+            "cluster": 6,
+            "customer_count": 88,
+            "retention_rate": 0.022727272727272728,
+            "mean_future_spend": 3.843295454545455,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.022727272727272728
+          }
+        ]
+      },
+      "original_cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 1143,
+          "customer_pct": 13.258322700382784,
+          "median_recency_days": 150.38493055555554,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 102.03,
+          "mean_items": 1.0,
+          "median_installments": 3.0,
+          "median_delivery_days": 12.902997685185184,
+          "mean_review_score": 2.9758983347940404,
+          "future_retention_rate": 0.010498687664041995
+        },
+        {
+          "cluster": 1,
+          "customer_count": 594,
+          "customer_pct": 6.890151954529637,
+          "median_recency_days": 161.7866261574074,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 361.01,
+          "mean_items": 1.0,
+          "median_installments": 8.0,
+          "median_delivery_days": 13.13990162037037,
+          "mean_review_score": 3.2810344827586206,
+          "future_retention_rate": 0.010101010101010102
+        },
+        {
+          "cluster": 2,
+          "customer_count": 418,
+          "customer_pct": 4.848625449483818,
+          "median_recency_days": 126.7254398148148,
+          "mean_frequency_orders": 1.6770334928229664,
+          "median_spend": 232.56,
+          "mean_items": 2.8636363636363638,
+          "median_installments": 2.5,
+          "median_delivery_days": 10.94130787037037,
+          "mean_review_score": 3.828547008547009,
+          "future_retention_rate": 0.03349282296650718
+        },
+        {
+          "cluster": 3,
+          "customer_count": 2737,
+          "customer_pct": 31.748057069945478,
+          "median_recency_days": 138.1028472222222,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 140.23000000000002,
+          "mean_items": 1.0,
+          "median_installments": 3.0,
+          "median_delivery_days": 10.17515625,
+          "mean_review_score": 5.0,
+          "future_retention_rate": 0.01278772378516624
+        },
+        {
+          "cluster": 4,
+          "customer_count": 602,
+          "customer_pct": 6.982948613849901,
+          "median_recency_days": 138.02302083333333,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 152.81,
+          "mean_items": 2.0,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.056909722222223,
+          "mean_review_score": 3.6504504504504505,
+          "future_retention_rate": 0.009966777408637873
+        },
+        {
+          "cluster": 5,
+          "customer_count": 3039,
+          "customer_pct": 35.25113095928546,
+          "median_recency_days": 126.92886574074073,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 64.9,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 11.028043981481481,
+          "mean_review_score": 4.15718827269516,
+          "future_retention_rate": 0.01085883514313919
+        },
+        {
+          "cluster": 6,
+          "customer_count": 88,
+          "customer_pct": 1.0207632525229091,
+          "median_recency_days": 145.8443287037037,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 0.0,
+          "mean_items": 0.0,
+          "median_installments": 1.0,
+          "median_delivery_days": null,
+          "mean_review_score": 1.5061728395061729,
+          "future_retention_rate": 0.022727272727272728
+        }
+      ],
+      "stability_interpretation": {
+        "B2_B4": null,
+        "B3_DEC": null
+      },
+      "reported_original_lift": 2.67,
+      "corrected_max_non_noise_cluster": 2,
+      "corrected_max_non_noise_retention_rate": 0.03349282,
+      "corrected_max_non_noise_lift": 2.67353358,
+      "corrected_max_non_noise_effect_size_cohens_h": 0.14377238,
+      "clusters": [
+        {
+          "cluster": 0,
+          "customer_count": 1143,
+          "retained_count": 12,
+          "retention_rate": 0.01049869,
+          "retention_rate_pct": 1.049869,
+          "retention_ci95": [
+            0.00601577,
+            0.01826087
+          ],
+          "retention_ci95_pct": [
+            0.601577,
+            1.826087
+          ],
+          "lift_vs_test_baseline": 0.83804802,
+          "cohens_h_vs_test_baseline": -0.01903662
+        },
+        {
+          "cluster": 1,
+          "customer_count": 594,
+          "retained_count": 6,
+          "retention_rate": 0.01010101,
+          "retention_rate_pct": 1.010101,
+          "retention_ci95": [
+            0.00463738,
+            0.02186038
+          ],
+          "retention_ci95_pct": [
+            0.463738,
+            2.186038
+          ],
+          "lift_vs_test_baseline": 0.80630378,
+          "cohens_h_vs_test_baseline": -0.0229756
+        },
+        {
+          "cluster": 2,
+          "customer_count": 418,
+          "retained_count": 14,
+          "retention_rate": 0.03349282,
+          "retention_rate_pct": 3.349282,
+          "retention_ci95": [
+            0.02005399,
+            0.05542806
+          ],
+          "retention_ci95_pct": [
+            2.005399,
+            5.542806
+          ],
+          "lift_vs_test_baseline": 2.67353358,
+          "cohens_h_vs_test_baseline": 0.14377238
+        },
+        {
+          "cluster": 3,
+          "customer_count": 2737,
+          "retained_count": 35,
+          "retention_rate": 0.01278772,
+          "retention_rate_pct": 1.278772,
+          "retention_ci95": [
+            0.00920914,
+            0.01773202
+          ],
+          "retention_ci95_pct": [
+            0.920914,
+            1.773202
+          ],
+          "lift_vs_test_baseline": 1.02076821,
+          "cohens_h_vs_test_baseline": 0.00232734
+        },
+        {
+          "cluster": 4,
+          "customer_count": 602,
+          "retained_count": 6,
+          "retention_rate": 0.00996678,
+          "retention_rate_pct": 0.996678,
+          "retention_ci95": [
+            0.00457564,
+            0.02157222
+          ],
+          "retention_ci95_pct": [
+            0.457564,
+            2.157222
+          ],
+          "lift_vs_test_baseline": 0.79558878,
+          "cohens_h_vs_test_baseline": -0.02432244
+        },
+        {
+          "cluster": 5,
+          "customer_count": 3039,
+          "retained_count": 33,
+          "retention_rate": 0.01085884,
+          "retention_rate_pct": 1.085884,
+          "retention_ci95": [
+            0.00774255,
+            0.01521016
+          ],
+          "retention_ci95_pct": [
+            0.774255,
+            1.521016
+          ],
+          "lift_vs_test_baseline": 0.86679646,
+          "cohens_h_vs_test_baseline": -0.0155326
+        },
+        {
+          "cluster": 6,
+          "customer_count": 88,
+          "retained_count": 2,
+          "retention_rate": 0.02272727,
+          "retention_rate_pct": 2.272727,
+          "retention_ci95": [
+            0.00625493,
+            0.07912545
+          ],
+          "retention_ci95_pct": [
+            0.625493,
+            7.912545
+          ],
+          "lift_vs_test_baseline": 1.8141835,
+          "cohens_h_vs_test_baseline": 0.07834216
+        }
+      ],
+      "binary_retention_analysis": {
+        "omnibus_test": "Pearson chi-square test of retention by cluster",
+        "omnibus_chi2": 17.27333184,
+        "omnibus_degrees_of_freedom": 6,
+        "omnibus_p_value": 0.00832949871348199,
+        "pairwise_test": "Two-sided Fisher exact test",
+        "pairwise_correction": "Holm step-down family-wise error correction",
+        "pairwise_comparisons": [
+          {
+            "cluster_a": 0,
+            "cluster_b": 1,
+            "odds_ratio_a_vs_b": 1.0397878,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.30617658,
+            "raw_p_value": 0.0031457467547298125,
+            "holm_adjusted_p_value": 0.06291493509459625,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.81909814,
+            "raw_p_value": 0.631206365207625,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 1.05393457,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 0.96648179,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 6,
+            "odds_ratio_a_vs_b": 0.45623342,
+            "raw_p_value": 0.264224608775849,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.29446064,
+            "raw_p_value": 0.010844855754509764,
+            "holm_adjusted_p_value": 0.18703481960570206,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.7877551,
+            "raw_p_value": 0.6862605803752428,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 1.01360544,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 0.92949907,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 6,
+            "odds_ratio_a_vs_b": 0.43877551,
+            "raw_p_value": 0.27616063846167277,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 2.67524752,
+            "raw_p_value": 0.004269690181579611,
+            "holm_adjusted_p_value": 0.08112411345001261,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 3.44224422,
+            "raw_p_value": 0.010390823311427893,
+            "holm_adjusted_p_value": 0.18703481960570206,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 3.15661566,
+            "raw_p_value": 0.0008960671166099967,
+            "holm_adjusted_p_value": 0.01881740944880993,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 6,
+            "odds_ratio_a_vs_b": 1.49009901,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 3,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 1.28670121,
+            "raw_p_value": 0.685728854232345,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 3,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 1.17993406,
+            "raw_p_value": 0.5421343011687229,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 3,
+            "cluster_b": 6,
+            "odds_ratio_a_vs_b": 0.55699482,
+            "raw_p_value": 0.3213172941443041,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 4,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 0.91702257,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 4,
+            "cluster_b": 6,
+            "odds_ratio_a_vs_b": 0.43288591,
+            "raw_p_value": 0.27142379807687206,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 5,
+            "cluster_b": 6,
+            "odds_ratio_a_vs_b": 0.47205589,
+            "raw_p_value": 0.25851246522774396,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          }
+        ],
+        "claim_policy": "A particular cluster difference is called significant only when its Holm-adjusted p-value is below 0.05."
+      },
+      "fit_scope": "train_fit_test_predict"
+    },
+    "Baseline_6_HDBSCAN": {
+      "model_type": "HDBSCAN",
+      "feature_set": "RFM_Selected_NonRedundant",
+      "num_features": 8,
+      "num_clusters": 6,
+      "original_internal_metrics": {
+        "silhouette_score": 0.1209,
+        "davies_bouldin_index": 1.9047,
+        "calinski_harabasz_score": 1497.21
+      },
+      "original_stability_metrics": {
+        "mean_pairwise_ari": 1.0,
+        "mean_pairwise_nmi": 1.0
+      },
+      "original_downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 0.9385,
+        "cluster_retention_anova_p_val": 0.4546599720235035,
+        "cluster_spend_anova_f_stat": 2.8385,
+        "cluster_spend_anova_p_val": 0.014509445911542955,
+        "max_retention_cluster": 0,
+        "max_retention_rate": 0.026,
+        "min_retention_rate": 0.0092,
+        "retention_lift": 2.07,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 231,
+            "retention_rate": 0.025974025974025976,
+            "mean_future_spend": 6.053160173160173,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.025974025974025976
+          },
+          {
+            "cluster": 1,
+            "customer_count": 625,
+            "retention_rate": 0.0112,
+            "mean_future_spend": 2.17536,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.0128
+          },
+          {
+            "cluster": 2,
+            "customer_count": 267,
+            "retention_rate": 0.011235955056179775,
+            "mean_future_spend": 1.0442322097378278,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011235955056179775
+          },
+          {
+            "cluster": 3,
+            "customer_count": 326,
+            "retention_rate": 0.009202453987730062,
+            "mean_future_spend": 0.9096319018404908,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.009202453987730062
+          },
+          {
+            "cluster": 4,
+            "customer_count": 839,
+            "retention_rate": 0.014302741358760428,
+            "mean_future_spend": 1.7653992848629319,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.015494636471990465
+          },
+          {
+            "cluster": 5,
+            "customer_count": 3699,
+            "retention_rate": 0.011084076777507435,
+            "mean_future_spend": 1.4550554203838875,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011895106785617735
+          }
+        ]
+      },
+      "original_cluster_profiles": [
+        {
+          "cluster": -1,
+          "customer_count": 2634,
+          "customer_pct": 30.553300081197076,
+          "median_recency_days": 174.37509259259258,
+          "mean_frequency_orders": 1.0197418375094913,
+          "median_spend": 176.875,
+          "mean_items": 1.1066818526955202,
+          "median_installments": 4.0,
+          "median_delivery_days": 14.661944444444444,
+          "mean_review_score": 3.5512840568374395,
+          "future_retention_rate": 0.01366742596810934
+        },
+        {
+          "cluster": 0,
+          "customer_count": 231,
+          "customer_pct": 2.6795035378726366,
+          "median_recency_days": 125.37229166666665,
+          "mean_frequency_orders": 2.0,
+          "median_spend": 213.10000000000002,
+          "mean_items": 2.2034632034632033,
+          "median_installments": 3.0,
+          "median_delivery_days": 11.19449074074074,
+          "mean_review_score": 4.1981566820276495,
+          "future_retention_rate": 0.025974025974025976
+        },
+        {
+          "cluster": 1,
+          "customer_count": 625,
+          "customer_pct": 7.249739009395661,
+          "median_recency_days": 134.2099074074074,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 153.32,
+          "mean_items": 2.1744,
+          "median_installments": 2.0,
+          "median_delivery_days": 9.985972222222221,
+          "mean_review_score": 3.700174825174825,
+          "future_retention_rate": 0.0112
+        },
+        {
+          "cluster": 2,
+          "customer_count": 267,
+          "customer_pct": 3.0970885048138266,
+          "median_recency_days": 96.06799768518518,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 81.63000000000001,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 13.619270833333331,
+          "mean_review_score": 1.0,
+          "future_retention_rate": 0.011235955056179775
+        },
+        {
+          "cluster": 3,
+          "customer_count": 326,
+          "customer_pct": 3.7814638673007774,
+          "median_recency_days": 119.19276041666666,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 74.05,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 12.658726851851851,
+          "mean_review_score": 3.0,
+          "future_retention_rate": 0.009202453987730062
+        },
+        {
+          "cluster": 4,
+          "customer_count": 839,
+          "customer_pct": 9.732049646212735,
+          "median_recency_days": 138.53024305555556,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 72.45,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 10.816799768518518,
+          "mean_review_score": 4.0,
+          "future_retention_rate": 0.014302741358760428
+        },
+        {
+          "cluster": 5,
+          "customer_count": 3699,
+          "customer_pct": 42.906855353207284,
+          "median_recency_days": 115.17167824074073,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 78.91,
+          "mean_items": 1.0,
+          "median_installments": 1.0,
+          "median_delivery_days": 9.59554398148148,
+          "mean_review_score": 4.9998447204968945,
+          "future_retention_rate": 0.011084076777507435
+        }
+      ],
+      "stability_interpretation": {
+        "HDBSCAN": "The perfect score is repeated-fit consistency on the identical blind-test matrix. It is not a comparison of a run against itself and is not out-of-sample stability."
+      },
+      "reported_original_lift": 2.07,
+      "corrected_max_non_noise_cluster": 0,
+      "corrected_max_non_noise_retention_rate": 0.02597403,
+      "corrected_max_non_noise_lift": 2.07335257,
+      "corrected_max_non_noise_effect_size_cohens_h": 0.09941801,
+      "clusters": [
+        {
+          "cluster": -1,
+          "customer_count": 2634,
+          "retained_count": 36,
+          "retention_rate": 0.01366743,
+          "retention_rate_pct": 1.366743,
+          "retention_ci95": [
+            0.00988865,
+            0.01886268
+          ],
+          "retention_ci95_pct": [
+            0.988865,
+            1.886268
+          ],
+          "lift_vs_test_baseline": 1.09098962,
+          "cohens_h_vs_test_baseline": 0.01002833
+        },
+        {
+          "cluster": 0,
+          "customer_count": 231,
+          "retained_count": 6,
+          "retention_rate": 0.02597403,
+          "retention_rate_pct": 2.597403,
+          "retention_ci95": [
+            0.0119573,
+            0.05549867
+          ],
+          "retention_ci95_pct": [
+            1.19573,
+            5.549867
+          ],
+          "lift_vs_test_baseline": 2.07335257,
+          "cohens_h_vs_test_baseline": 0.09941801
+        },
+        {
+          "cluster": 1,
+          "customer_count": 625,
+          "retained_count": 7,
+          "retention_rate": 0.0112,
+          "retention_rate_pct": 1.12,
+          "retention_ci95": [
+            0.00543565,
+            0.0229363
+          ],
+          "retention_ci95_pct": [
+            0.543565,
+            2.29363
+          ],
+          "lift_vs_test_baseline": 0.89402963,
+          "cohens_h_vs_test_baseline": -0.0122659
+        },
+        {
+          "cluster": 2,
+          "customer_count": 267,
+          "retained_count": 3,
+          "retention_rate": 0.01123596,
+          "retention_rate_pct": 1.123596,
+          "retention_ci95": [
+            0.00382846,
+            0.03250815
+          ],
+          "retention_ci95_pct": [
+            0.382846,
+            3.250815
+          ],
+          "lift_vs_test_baseline": 0.89689971,
+          "cohens_h_vs_test_baseline": -0.01192451
+        },
+        {
+          "cluster": 3,
+          "customer_count": 326,
+          "retained_count": 3,
+          "retention_rate": 0.00920245,
+          "retention_rate_pct": 0.920245,
+          "retention_ci95": [
+            0.0031345,
+            0.02670243
+          ],
+          "retention_ci95_pct": [
+            0.31345,
+            2.670243
+          ],
+          "lift_vs_test_baseline": 0.73457737,
+          "cohens_h_vs_test_baseline": -0.03216878
+        },
+        {
+          "cluster": 4,
+          "customer_count": 839,
+          "retained_count": 12,
+          "retention_rate": 0.01430274,
+          "retention_rate_pct": 1.430274,
+          "retention_ci95": [
+            0.0082004,
+            0.02483245
+          ],
+          "retention_ci95_pct": [
+            0.82004,
+            2.483245
+          ],
+          "lift_vs_test_baseline": 1.14170309,
+          "cohens_h_vs_test_baseline": 0.0154389
+        },
+        {
+          "cluster": 5,
+          "customer_count": 3699,
+          "retained_count": 41,
+          "retention_rate": 0.01108408,
+          "retention_rate_pct": 1.108408,
+          "retention_ci95": [
+            0.00818119,
+            0.0150014
+          ],
+          "retention_ci95_pct": [
+            0.818119,
+            1.50014
+          ],
+          "lift_vs_test_baseline": 0.88477617,
+          "cohens_h_vs_test_baseline": -0.01337029
+        }
+      ],
+      "binary_retention_analysis": {
+        "omnibus_test": "Pearson chi-square test of retention by cluster",
+        "omnibus_chi2": 4.69332062,
+        "omnibus_degrees_of_freedom": 5,
+        "omnibus_p_value": 0.4544414602404031,
+        "pairwise_test": "Two-sided Fisher exact test",
+        "pairwise_correction": "Holm step-down family-wise error correction",
+        "pairwise_comparisons": [
+          {
+            "cluster_a": 0,
+            "cluster_b": 1,
+            "odds_ratio_a_vs_b": 2.35428571,
+            "raw_p_value": 0.12422617449819327,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 2.34666667,
+            "raw_p_value": 0.3144903565619449,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 2.87111111,
+            "raw_p_value": 0.1727815564457491,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 1.83777778,
+            "raw_p_value": 0.24615244849329776,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 2.37918699,
+            "raw_p_value": 0.05505724606971251,
+            "holm_adjusted_p_value": 0.8258586910456877,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.99676375,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 1.21952535,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.78060949,
+            "raw_p_value": 0.6489778617572755,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 1.010577,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 1.22348485,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.78314394,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 1.01385809,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 3,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.64009288,
+            "raw_p_value": 0.5778928995357426,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 3,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 0.8286642,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 4,
+            "cluster_b": 5,
+            "odds_ratio_a_vs_b": 1.29459994,
+            "raw_p_value": 0.47505203784284566,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          }
+        ],
+        "claim_policy": "A particular cluster difference is called significant only when its Holm-adjusted p-value is below 0.05."
+      },
+      "fit_scope": "blind_test_transductive",
+      "noise_customer_count": 2634,
+      "stability_audit": {
+        "method": "three repeated fits on the identical blind-test feature matrix",
+        "mean_pairwise_ari": 1.0,
+        "mean_pairwise_nmi": 1.0,
+        "pairwise_ari": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "pairwise_nmi": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "identical_assignments_all_pairs": true,
+        "interpretation": "Exact repeatability on the same test matrix; not seed robustness or out-of-sample stability."
+      }
+    },
+    "Baseline_7_DEC": {
+      "model_type": "DEC",
+      "feature_set": "RFM_Selected_NonRedundant",
+      "num_features": 8,
+      "num_clusters": 5,
+      "original_internal_metrics": {
+        "silhouette_score": 0.1429,
+        "davies_bouldin_index": 1.6039,
+        "calinski_harabasz_score": 1490.72
+      },
+      "original_stability_metrics": {
+        "mean_pairwise_ari": 0.5829,
+        "mean_pairwise_nmi": 0.66
+      },
+      "original_downstream_utility": {
+        "cohort_baseline_retention_rate": 0.0125,
+        "cluster_retention_anova_f_stat": 6.3273,
+        "cluster_retention_anova_p_val": 4.429077632709385e-05,
+        "cluster_spend_anova_f_stat": 12.8855,
+        "cluster_spend_anova_p_val": 1.8464177732335582e-10,
+        "max_retention_cluster": 3,
+        "max_retention_rate": 0.0465,
+        "min_retention_rate": 0.0104,
+        "retention_lift": 3.71,
+        "cluster_breakdown": [
+          {
+            "cluster": 0,
+            "customer_count": 2330,
+            "retention_rate": 0.01201716738197425,
+            "mean_future_spend": 1.3938454935622318,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.013304721030042918
+          },
+          {
+            "cluster": 1,
+            "customer_count": 2881,
+            "retention_rate": 0.010413051023950017,
+            "mean_future_spend": 1.221464769177369,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011107254425546685
+          },
+          {
+            "cluster": 2,
+            "customer_count": 2351,
+            "retention_rate": 0.011909825606125054,
+            "mean_future_spend": 1.9296682262866864,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.011909825606125054
+          },
+          {
+            "cluster": 3,
+            "customer_count": 258,
+            "retention_rate": 0.046511627906976744,
+            "mean_future_spend": 12.74937984496124,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.050387596899224806
+          },
+          {
+            "cluster": 4,
+            "customer_count": 801,
+            "retention_rate": 0.012484394506866416,
+            "mean_future_spend": 2.4295755305867663,
+            "median_future_spend": 0.0,
+            "mean_future_orders": 0.01373283395755306
+          }
+        ]
+      },
+      "original_cluster_profiles": [
+        {
+          "cluster": 0,
+          "customer_count": 2330,
+          "customer_pct": 27.027027027027028,
+          "median_recency_days": 54.340439814814815,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 87.125,
+          "mean_items": 1.0017167381974248,
+          "median_installments": 1.0,
+          "median_delivery_days": 10.942962962962962,
+          "mean_review_score": 5.0,
+          "future_retention_rate": 0.01201716738197425
+        },
+        {
+          "cluster": 1,
+          "customer_count": 2881,
+          "customer_pct": 33.41839693771024,
+          "median_recency_days": 142.48902777777778,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 100.08,
+          "mean_items": 1.01041305102395,
+          "median_installments": 2.0,
+          "median_delivery_days": 12.894837962962962,
+          "mean_review_score": 2.994967025338424,
+          "future_retention_rate": 0.010413051023950017
+        },
+        {
+          "cluster": 2,
+          "customer_count": 2351,
+          "customer_pct": 27.27061825774272,
+          "median_recency_days": 236.08274305555554,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 105.28,
+          "mean_items": 1.006380263717567,
+          "median_installments": 3.0,
+          "median_delivery_days": 9.727141203703702,
+          "mean_review_score": 5.0,
+          "future_retention_rate": 0.011909825606125054
+        },
+        {
+          "cluster": 3,
+          "customer_count": 258,
+          "customer_pct": 2.992692263078529,
+          "median_recency_days": 128.38619212962962,
+          "mean_frequency_orders": 2.0968992248062017,
+          "median_spend": 220.76999999999998,
+          "mean_items": 2.395348837209302,
+          "median_installments": 2.583333333333333,
+          "median_delivery_days": 11.244522569444445,
+          "mean_review_score": 4.221625344352617,
+          "future_retention_rate": 0.046511627906976744
+        },
+        {
+          "cluster": 4,
+          "customer_count": 801,
+          "customer_pct": 9.291265514441479,
+          "median_recency_days": 134.47668981481482,
+          "mean_frequency_orders": 1.0,
+          "median_spend": 150.60000000000002,
+          "mean_items": 2.1036204744069913,
+          "median_installments": 2.0,
+          "median_delivery_days": 10.198217592592592,
+          "mean_review_score": 3.3516260162601625,
+          "future_retention_rate": 0.012484394506866416
+        }
+      ],
+      "stability_interpretation": {
+        "B2_B4": null,
+        "B3_DEC": "Lower ARI/NMI indicates materially different partitions across seeds. B3 KMeans is more sensitive to initialization in the selected feature space; DEC additionally depends on stochastic neural initialization and optimization."
+      },
+      "reported_original_lift": 3.71,
+      "corrected_max_non_noise_cluster": 3,
+      "corrected_max_non_noise_retention_rate": 0.04651163,
+      "corrected_max_non_noise_lift": 3.71274763,
+      "corrected_max_non_noise_effect_size_cohens_h": 0.21042362,
+      "clusters": [
+        {
+          "cluster": 0,
+          "customer_count": 2330,
+          "retained_count": 28,
+          "retention_rate": 0.01201717,
+          "retention_rate_pct": 1.201717,
+          "retention_ci95": [
+            0.00832733,
+            0.01731343
+          ],
+          "retention_ci95_pct": [
+            0.832733,
+            1.731343
+          ],
+          "lift_vs_test_baseline": 0.95925926,
+          "cohens_h_vs_test_baseline": -0.00463592
+        },
+        {
+          "cluster": 1,
+          "customer_count": 2881,
+          "retained_count": 30,
+          "retention_rate": 0.01041305,
+          "retention_rate_pct": 1.041305,
+          "retention_ci95": [
+            0.00730378,
+            0.01482619
+          ],
+          "retention_ci95_pct": [
+            0.730378,
+            1.482619
+          ],
+          "lift_vs_test_baseline": 0.83121216,
+          "cohens_h_vs_test_baseline": -0.01987853
+        },
+        {
+          "cluster": 2,
+          "customer_count": 2351,
+          "retained_count": 28,
+          "retention_rate": 0.01190983,
+          "retention_rate_pct": 1.190983,
+          "retention_ci95": [
+            0.00825284,
+            0.01715926
+          ],
+          "retention_ci95_pct": [
+            0.825284,
+            1.715926
+          ],
+          "lift_vs_test_baseline": 0.9506908,
+          "cohens_h_vs_test_baseline": -0.00562323
+        },
+        {
+          "cluster": 3,
+          "customer_count": 258,
+          "retained_count": 12,
+          "retention_rate": 0.04651163,
+          "retention_rate_pct": 4.651163,
+          "retention_ci95": [
+            0.02680387,
+            0.07952558
+          ],
+          "retention_ci95_pct": [
+            2.680387,
+            7.952558
+          ],
+          "lift_vs_test_baseline": 3.71274763,
+          "cohens_h_vs_test_baseline": 0.21042362
+        },
+        {
+          "cluster": 4,
+          "customer_count": 801,
+          "retained_count": 10,
+          "retention_rate": 0.01248439,
+          "retention_rate_pct": 1.248439,
+          "retention_ci95": [
+            0.00679519,
+            0.02282737
+          ],
+          "retention_ci95_pct": [
+            0.679519,
+            2.282737
+          ],
+          "lift_vs_test_baseline": 0.99655523,
+          "cohens_h_vs_test_baseline": -0.00038833
+        }
+      ],
+      "binary_retention_analysis": {
+        "omnibus_test": "Pearson chi-square test of retention by cluster",
+        "omnibus_chi2": 25.24980849,
+        "omnibus_degrees_of_freedom": 4,
+        "omnibus_p_value": 4.4813329261670086e-05,
+        "pairwise_test": "Two-sided Fisher exact test",
+        "pairwise_correction": "Holm step-down family-wise error correction",
+        "pairwise_comparisons": [
+          {
+            "cluster_a": 0,
+            "cluster_b": 1,
+            "odds_ratio_a_vs_b": 1.15592239,
+            "raw_p_value": 0.597588821269651,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 1.0091225,
+            "raw_p_value": 1.0,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.24934839,
+            "raw_p_value": 0.00032494707105244666,
+            "holm_adjusted_p_value": 0.0027117679692354735,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 0,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.9621199,
+            "raw_p_value": 0.853914990177118,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 2,
+            "odds_ratio_a_vs_b": 0.87300195,
+            "raw_p_value": 0.6908481670934139,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.21571378,
+            "raw_p_value": 8.690236426477195e-05,
+            "holm_adjusted_p_value": 0.0008690236426477196,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 1,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.83233953,
+            "raw_p_value": 0.5681362572563164,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 3,
+            "odds_ratio_a_vs_b": 0.24709427,
+            "raw_p_value": 0.0003013075521372748,
+            "holm_adjusted_p_value": 0.0027117679692354735,
+            "significant_at_0.05": true
+          },
+          {
+            "cluster_a": 2,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 0.9534223,
+            "raw_p_value": 0.8529999645451768,
+            "holm_adjusted_p_value": 1.0,
+            "significant_at_0.05": false
+          },
+          {
+            "cluster_a": 3,
+            "cluster_b": 4,
+            "odds_ratio_a_vs_b": 3.85853659,
+            "raw_p_value": 0.002037944695435357,
+            "holm_adjusted_p_value": 0.0142656128680475,
+            "significant_at_0.05": true
+          }
+        ],
+        "claim_policy": "A particular cluster difference is called significant only when its Holm-adjusted p-value is below 0.05."
+      },
+      "fit_scope": "train_fit_test_predict"
+    }
+  },
+  "reconciliation": {
+    "original_manifest_preserved": true,
+    "original_manifest_path": "data/gold/baselines/phase6_baselines_manifest.json",
+    "original_lifts_are_based_on_rounded_baseline": 0.0125,
+    "corrected_lifts_use_exact_blind_test_baseline": 0.01252755
+  },
+  "assignment_audits": {
+    "source_file": "data/gold/baselines/phase6_baseline_test_assignments.parquet",
+    "b3_dec": {
+      "exact_assignment_arrays_equal": false,
+      "b3_cluster_counts": {
+        "0": 1189,
+        "1": 5275,
+        "2": 258,
+        "3": 1105,
+        "4": 794
+      },
+      "dec_cluster_counts": {
+        "0": 2330,
+        "1": 2881,
+        "2": 2351,
+        "3": 258,
+        "4": 801
+      },
+      "retention_summaries_equal": false,
+      "generation_independence": {
+        "status": "confirmed_from_source",
+        "evidence": [
+          "B3 is generated by the KMeans branch with X_train/X_test for the selected non-redundant feature set.",
+          "DEC is generated by the DEC training branch with a separately trained neural model.",
+          "The saved parquet contains separate columns for B3 and DEC."
+        ]
+      }
+    }
+  }
+}

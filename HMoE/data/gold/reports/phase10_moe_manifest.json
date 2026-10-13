@@ -1,0 +1,402 @@
+{
+  "phase": "Phase 10: Heterogeneous Mixture-of-Experts",
+  "input_artifacts": [
+    "data/gold/temporal_customer_cohort.parquet",
+    "data/gold/temporal_customer_profiles_cutoff.parquet",
+    "data/processed/customer_text_view.parquet",
+    "data/embeddings/phase8_temporal_embeddings.parquet"
+  ],
+  "output_artifacts": [
+    "data\\gold\\baselines\\phase10_moe_test_assignments.parquet",
+    "data/gold/reports/phase10_moe_manifest.json",
+    "data/gold/reports/phase10_moe_report.md"
+  ],
+  "protocol": {
+    "cohort_count": 57510,
+    "train_count": 40208,
+    "validation_count": 8681,
+    "test_count": 8621,
+    "test_customer_id_sha256": "98436e8f74505213a9fbb779e68341dcb86c1500d053000f108644806d54e00f",
+    "k": 5,
+    "clustering": "KMeans(n_clusters=5, n_init=10), fit on train routed vectors and predict on test",
+    "stability_seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "gate_seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "test_outcomes_used": false
+  },
+  "expert_definition": {
+    "modalities": [
+      "behavioral",
+      "text",
+      "temporal"
+    ],
+    "expert_output_dimension": 32,
+    "inputs": "Phase 9 train-fitted projected view representations",
+    "missing_view_policy": "availability mask sets unavailable logits to -infinity and renormalizes",
+    "all_missing_policy": "not present in this cohort; guard would reject zero denominator"
+  },
+  "training": {
+    "objective": "unsupervised reconstruction of mean projected view",
+    "fit_split": "train customers only",
+    "epochs": 10,
+    "seed": 42,
+    "gate_architecture": "Linear -> Tanh -> Linear",
+    "quality_features": "per-view projected-vector L2 norm, train-derived normalization"
+  },
+  "results": {
+    "uniform": {
+      "variant": "uniform",
+      "k": 5,
+      "dimension": 32,
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_silhouette": 0.27308,
+      "test_davies_bouldin": 1.290308,
+      "test_calinski_harabasz": 3805.60457,
+      "test_stability_mean_pairwise_ari": 0.995613,
+      "test_stability_pairwise_ari": [
+        0.996934,
+        0.995334,
+        0.996934,
+        0.995334,
+        0.992899,
+        1.0,
+        0.992899,
+        0.992899,
+        1.0,
+        0.992899
+      ],
+      "test_cluster_counts": [
+        1242,
+        1126,
+        3074,
+        2022,
+        1157
+      ],
+      "gate_diagnostics": {
+        "mean_weight": [
+          0.43474701046943665,
+          0.1306370049715042,
+          0.43474701046943665
+        ],
+        "std_weight": [
+          0.08137600123882294,
+          0.16276299953460693,
+          0.08137600123882294
+        ],
+        "mean_entropy": 0.852027,
+        "single_view_rate": 0.0,
+        "min_weight": 0.0,
+        "max_weight": 0.5,
+        "sum_deviation_max": 0.0,
+        "available_view_counts": [
+          57510,
+          22535,
+          57510
+        ],
+        "weights_by_availability": {
+          "(np.int64(1), np.int64(0), np.int64(1))": [
+            0.5,
+            0.0,
+            0.5
+          ],
+          "(np.int64(1), np.int64(1), np.int64(1))": [
+            0.3333899974822998,
+            0.3333899974822998,
+            0.3333899974822998
+          ]
+        }
+      }
+    },
+    "fixed_behavioral_heavy": {
+      "variant": "fixed_behavioral_heavy",
+      "k": 5,
+      "dimension": 32,
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_silhouette": 0.374525,
+      "test_davies_bouldin": 1.214152,
+      "test_calinski_harabasz": 3350.098118,
+      "test_stability_mean_pairwise_ari": 0.99969,
+      "test_stability_pairwise_ari": [
+        0.999483,
+        1.0,
+        0.999483,
+        1.0,
+        0.999483,
+        1.0,
+        0.999483,
+        0.999483,
+        1.0,
+        0.999483
+      ],
+      "test_cluster_counts": [
+        2611,
+        2823,
+        1688,
+        587,
+        912
+      ],
+      "gate_diagnostics": {
+        "mean_weight": [
+          0.691223,
+          0.078369,
+          0.230408
+        ],
+        "std_weight": [
+          0.073224,
+          0.097632,
+          0.024408
+        ],
+        "mean_entropy": 0.714346,
+        "single_view_rate": 0.0,
+        "min_weight": 0.0,
+        "max_weight": 0.7499999999999999,
+        "sum_deviation_max": 1.1102230246251565e-16,
+        "available_view_counts": [
+          57510,
+          22535,
+          57510
+        ],
+        "weights_by_availability": {
+          "(np.int64(1), np.int64(0), np.int64(1))": [
+            0.75,
+            0.0,
+            0.25
+          ],
+          "(np.int64(1), np.int64(1), np.int64(1))": [
+            0.6,
+            0.2,
+            0.2
+          ]
+        }
+      }
+    },
+    "learned_gate": {
+      "variant": "learned_gate",
+      "k": 5,
+      "dimension": 32,
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_silhouette": 0.268705,
+      "test_davies_bouldin": 1.345548,
+      "test_calinski_harabasz": 3795.695702,
+      "test_stability_mean_pairwise_ari": 0.978325,
+      "test_stability_pairwise_ari": [
+        0.954778,
+        0.949784,
+        0.954482,
+        0.949602,
+        0.994281,
+        0.999693,
+        0.993339,
+        0.994587,
+        0.999057,
+        0.993645
+      ],
+      "test_cluster_counts": [
+        2835,
+        1203,
+        1198,
+        1324,
+        2061
+      ],
+      "gate_diagnostics": {
+        "mean_weight": [
+          0.4243769943714142,
+          0.13086900115013123,
+          0.4447549879550934
+        ],
+        "std_weight": [
+          0.07823699712753296,
+          0.16312499344348907,
+          0.08925200253725052
+        ],
+        "mean_entropy": 0.850875,
+        "single_view_rate": 0.0,
+        "min_weight": 0.0,
+        "max_weight": 0.559852659702301,
+        "sum_deviation_max": 1.1920928955078125e-07,
+        "available_view_counts": [
+          57510,
+          22535,
+          57510
+        ],
+        "weights_by_availability": {
+          "(np.int64(1), np.int64(0), np.int64(1))": [
+            0.48533400893211365,
+            0.0,
+            0.5146669745445251
+          ],
+          "(np.int64(1), np.int64(1), np.int64(1))": [
+            0.3297710120677948,
+            0.333981990814209,
+            0.3362480103969574
+          ]
+        }
+      }
+    },
+    "quality_aware_gate": {
+      "variant": "quality_aware_gate",
+      "k": 5,
+      "dimension": 32,
+      "cohort_count": 57510,
+      "train_count": 40208,
+      "validation_count": 8681,
+      "test_count": 8621,
+      "test_silhouette": 0.277735,
+      "test_davies_bouldin": 1.336678,
+      "test_calinski_harabasz": 3889.770345,
+      "test_stability_mean_pairwise_ari": 0.997184,
+      "test_stability_pairwise_ari": [
+        1.0,
+        1.0,
+        0.993146,
+        0.999628,
+        1.0,
+        0.993146,
+        0.999628,
+        0.993146,
+        0.999628,
+        0.993516
+      ],
+      "test_cluster_counts": [
+        2761,
+        2049,
+        1200,
+        1189,
+        1422
+      ],
+      "gate_diagnostics": {
+        "mean_weight": [
+          0.4405669867992401,
+          0.12015900015830994,
+          0.43927401304244995
+        ],
+        "std_weight": [
+          0.0764629989862442,
+          0.1498199999332428,
+          0.07712499797344208
+        ],
+        "mean_entropy": 0.850666,
+        "single_view_rate": 0.0,
+        "min_weight": 0.0,
+        "max_weight": 0.5515347719192505,
+        "sum_deviation_max": 1.1920928955078125e-07,
+        "available_view_counts": [
+          57510,
+          22535,
+          57510
+        ],
+        "weights_by_availability": {
+          "(np.int64(1), np.int64(0), np.int64(1))": [
+            0.5004109740257263,
+            0.0,
+            0.4995900094509125
+          ],
+          "(np.int64(1), np.int64(1), np.int64(1))": [
+            0.3476940095424652,
+            0.3066509962081909,
+            0.34565600752830505
+          ]
+        }
+      }
+    }
+  },
+  "gate_seed_sensitivity": {
+    "learned_gate": [
+      {
+        "seed": 42,
+        "test_silhouette": 0.268705,
+        "test_stability_mean_pairwise_ari": 0.978325
+      },
+      {
+        "seed": 43,
+        "test_silhouette": 0.267852,
+        "test_stability_mean_pairwise_ari": 0.996544
+      },
+      {
+        "seed": 44,
+        "test_silhouette": 0.270159,
+        "test_stability_mean_pairwise_ari": 0.998349
+      },
+      {
+        "seed": 45,
+        "test_silhouette": 0.268341,
+        "test_stability_mean_pairwise_ari": 0.963566
+      },
+      {
+        "seed": 46,
+        "test_silhouette": 0.270108,
+        "test_stability_mean_pairwise_ari": 0.99458
+      }
+    ],
+    "quality_aware_gate": [
+      {
+        "seed": 42,
+        "test_silhouette": 0.277735,
+        "test_stability_mean_pairwise_ari": 0.997184
+      },
+      {
+        "seed": 43,
+        "test_silhouette": 0.26764,
+        "test_stability_mean_pairwise_ari": 0.947262
+      },
+      {
+        "seed": 44,
+        "test_silhouette": 0.268611,
+        "test_stability_mean_pairwise_ari": 0.999265
+      },
+      {
+        "seed": 45,
+        "test_silhouette": 0.270421,
+        "test_stability_mean_pairwise_ari": 0.989504
+      },
+      {
+        "seed": 46,
+        "test_silhouette": 0.266875,
+        "test_stability_mean_pairwise_ari": 0.997402
+      }
+    ]
+  },
+  "phase9_comparison": {
+    "strongest_static_fusion_by_silhouette": {
+      "variant": "text_temporal_fixed_weight",
+      "test_silhouette": 0.557928,
+      "test_stability_mean_pairwise_ari": 1.0
+    },
+    "full_static_fusion": {
+      "variant": "behavioral_text_temporal_fixed_weight",
+      "test_silhouette": 0.30557,
+      "test_stability_mean_pairwise_ari": 0.998652
+    },
+    "adaptive_gate_minus_strongest_static_silhouette": {
+      "learned_gate": -0.289223,
+      "quality_aware_gate": -0.280193
+    }
+  },
+  "assignment_artifact": "data\\gold\\baselines\\phase10_moe_test_assignments.parquet",
+  "limitations": [
+    "The gate objective is representation reconstruction, not future retention prediction.",
+    "Phase 9 test exploration is disclosed; Phase 10 does not tune gates on test outcomes.",
+    "The text view is missing for 34,975 customers, so adaptive routing is evaluated under explicit missingness."
+  ],
+  "reproduction_command": "python -m src.phase10_moe"
+}
